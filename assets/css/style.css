@@ -1,0 +1,129 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Quicksand:wght@300..700&display=swap");
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+body {
+  font-family: "Quicksand", sans-serif;
+  font-size: 1rem;
+  padding-top: 100px;
+}
+
+#menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 1rem;
+  box-shadow: 0 0 5px rgba(13, 27, 42, 0.3);
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+#menu a {
+  text-decoration: none;
+  color: rgb(27, 38, 59);
+}
+#menu > a {
+  font-family: "Oswald", sans-serif;
+  font-size: 1.4rem;
+  color: rgb(211, 97, 53);
+  font-weight: bold;
+  text-transform: uppercase;
+}
+#menu nav {
+  flex: 1;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.inside-menu {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  max-width: 900px;
+  margin: 0 auto 1rem auto;
+}
+.inside-menu a {
+  background: rgb(65, 90, 119);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  text-decoration: none;
+}
+
+#user {
+  max-width: 900px;
+  margin: auto;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+#user h2 {
+  text-align: center;
+  font-family: "Oswald", sans-serif;
+  font-weight: normal;
+  font-size: 2rem;
+}
+#user form {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+  text-align: left;
+  font-size: 1.3rem;
+  max-width: 300px;
+  margin: auto;
+}
+#user form ul {
+  padding: 3rem 0;
+  position: relative;
+}
+#user form ul > ul {
+  padding: 1rem;
+  position: absolute;
+  top: 5px;
+  list-style: none;
+  background: white;
+  box-shadow: 0 0 3px #ccc;
+  width: 285px;
+}
+#user form label {
+  text-align: left;
+  font-weight: bold;
+  margin-top: 1rem;
+  width: 100%;
+}
+#user form input {
+  padding: 5px 1rem;
+  border-radius: 3px;
+  border: 1px solid rgb(65, 90, 119);
+  font-size: 1.3rem;
+  width: 100%;
+  transition: all 0.5s;
+}
+#user form input:focus {
+  background: rgba(77, 170, 87, 0.2);
+}
+#user form button {
+  font-size: 1.3rem;
+  padding: 5px 1rem;
+  border-radius: 3px;
+  background: rgb(65, 90, 119);
+  color: white;
+  border: none;
+  margin-top: 1rem;
+  font-family: "Oswald", sans-serif;
+  cursor: pointer;
+}
+#user form button#delete {
+  margin-top: -41px;
+  margin-left: auto;
+  background: rgb(158, 0, 49);
+}
+#user form #delete {
+  margin-top: -41px;
+  margin-left: auto;
+}/*# sourceMappingURL=style.css.map */

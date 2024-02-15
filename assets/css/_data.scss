@@ -1,0 +1,28 @@
+// colors
+$black: rgb(13, 27, 42);
+$navy: rgb(27, 38, 59);
+$blue: rgb(65, 90, 119);
+$lightBlue: rgb(119, 141, 169);
+$white: rgb(224, 225, 221);
+$red: rgb(158,0,49);
+$orange: rgb(211, 97, 53);
+$green:rgb(77, 170, 87);
+//fonts
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Quicksand:wght@300..700&display=swap');
+$font: "Quicksand", sans-serif;
+$title: "Oswald", sans-serif;
+
+@mixin flexbox($jc, $ai, $fd:false, $fw:false, $fg:false) {
+    display: flex;
+    justify-content: $jc;
+    align-items: $ai;
+    @if $fd {
+        flex-direction: $fd;
+    }
+    @if $fw {
+        flex-wrap: $fw;
+    }
+    @if $fg {
+        flex-grow: $fg;
+    }
+}
