@@ -11,6 +11,7 @@ if(isset($_COOKIE['remember_forum_user'])) {
     $_SESSION['pseudo'] = $r['pseudo'];
     $_SESSION['email'] = $r['mail'];
     header('location:index.php');
+    exit;
 }
 // Si on a une variable POST qui arrive
 if($_POST) {
