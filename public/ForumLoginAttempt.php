@@ -1,18 +1,6 @@
 <?php
 session_start();
 require_once('../api/config/bdd.php');
-
-if(isset($_COOKIE['remember_forum_user'])) {
-    // On cherche l'utilisateur
-    $s = $cnx->prepare("SELECT * FROM utilisateur WHERE pseudo = ? AND pass=? ");
-    $s->execute([$_COOKIE['remember_forum_user'], $_COOKIE['remember_forum_key']]);
-    $r = $s->fetch();
-    $_SESSION['id'] = $r['id'];
-    $_SESSION['pseudo'] = $r['pseudo'];
-    $_SESSION['email'] = $r['mail'];
-    header('location:index.php');
-    exit;
-}
 // Si on a une variable POST qui arrive
 if($_POST) {
     // On cherche l'utilisateur

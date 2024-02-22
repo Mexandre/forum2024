@@ -1,7 +1,16 @@
 
 <?php
 session_start();
-    // On définit le contenu à afficher dans les meta données
+if(isset($_COOKIE['remember_forum_user'])) {
+    require_once('../api/config/bdd.php');
+    // On cherche l'utilisateur
+    $s = $cnx->prepare("SELECT * FROM utilisateur WHERE pseudo = ? AND pass=? ");
+    $s->execute([$_COOKIE['remember_forum_user'], $_COOKIE['remember_forum_key']]);
+    $r = $s->fetch();
+    $_SESSION['id'] = $r['id'];
+    $_SESSION['pseudo'] = $r['pseudo'];
+    $_SESSION['email'] = $r['mail'];
+}    // On définit le contenu à afficher dans les meta données
     $lang= "fr-FR";
     $title = "Mon forum";
     $desription = "Ceci et une api de gestion de forum";
