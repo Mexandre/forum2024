@@ -30,8 +30,8 @@ if(isset($_COOKIE['remember_forum_user'])) {
         switch ($action) {
             default:
             // Page par défaut
-            echo $_COOKIE['remember_forum_user'];
-            echo $_COOKIE['remember_forum_key'];
+            // echo $_COOKIE['remember_forum_user'];
+            // echo $_COOKIE['remember_forum_key'];
             break;
             case 'login':
                 require_once(API."ForumLoginForm.php");
