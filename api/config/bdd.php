@@ -1,6 +1,6 @@
 <?php
 $host = "localhost";
-$db = "forum_2024";
+$db = "forum";
 $var = "charset=utf8";
 $user = "root";
 $pass = "root";

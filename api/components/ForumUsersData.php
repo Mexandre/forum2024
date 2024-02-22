@@ -28,10 +28,11 @@ if ($method == 'GET') {
 }
 if($method == 'POST') {
     
-    $ins = $cnx->prepare("INSERT INTO forum_users SET pseudo = :pseudo, email= :email, mdp= :mdp, date_create= :date");
+    $ins = $cnx->prepare("INSERT INTO utilisateur SET pseudo = :pseudo, mail= :email, pass= :mdp, date_naiss= :birth, date_ins= :date");
     $ins->bindParam(':pseudo', $data['pseudo']);
     $ins->bindParam(':email', $data['email']);
     $ins->bindParam(':mdp', password_hash($data['mdp'], PASSWORD_DEFAULT));
+    $ins->bindParam(':birth', $data['birth']);
     $ins->bindParam(':date', date("Y-m-d H:i:s"));
     $ins->execute();
     

@@ -6,5 +6,12 @@
         <a href="?action=admin">Administration</a>
         <a href="?action=mp">Messages Privées</a>
     </nav>
+    <?php 
+    // si on est loggué, on dit bonjour
+    if (isset($_SESSION['pseudo'])) {
+        echo "Bonjour " . $_SESSION['pseudo'];
+        echo '<a href="logout.php">&#10151;</a>';
+    }
+    ?>
 </header>
 

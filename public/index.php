@@ -1,5 +1,6 @@
 
 <?php
+session_start();
     // On définit le contenu à afficher dans les meta données
     $lang= "fr-FR";
     $title = "Mon forum";
@@ -13,6 +14,7 @@
 </head>
 <body>
 <?php
+    if(isset($_SESSION['id'])) {
         require_once(ROOT."includes/menu.php");
         $action = isset($_GET['action']) ? $_GET['action'] : "";
         $type = isset($_GET['type']) ? $_GET['type'] : "";
@@ -32,5 +34,10 @@
                 }
             break;
         }
+            
+    } else {
+        require_once(API."ForumLoginForm.php");
+    }
+
         require_once(ROOT."includes/bottom.php");
     ?>
