@@ -1,8 +1,19 @@
 <?php
 session_start();
+require_once('../api/config/bdd.php');
+
+if(isset($_COOKIE['remember_forum_user'])) {
+    // On cherche l'utilisateur
+    $s = $cnx->prepare("SELECT * FROM utilisateur WHERE pseudo = ? AND pass=? ");
+    $s->execute([$_COOKIE['remember_forum_user'], $_COOKIE['remember_forum_key']]);
+    $r = $s->fetch();
+    $_SESSION['id'] = $r['id'];
+    $_SESSION['pseudo'] = $r['pseudo'];
+    $_SESSION['email'] = $r['mail'];
+    header('location:index.php');
+}
 // Si on a une variable POST qui arrive
 if($_POST) {
-    require_once('../api/config/bdd.php');
     // On cherche l'utilisateur
     $s = $cnx->prepare("SELECT * FROM utilisateur WHERE mail = ?");
     $s->execute([$_POST['email']]);
@@ -15,6 +26,13 @@ if($_POST) {
             $_SESSION['id'] = $r['id'];
             $_SESSION['pseudo'] = $r['pseudo'];
             $_SESSION['email'] = $r['mail'];
+            // Si la case rester connecté est active, on crée les cookies pour se reconnecter automatiquement
+            if(isset($_POST['remember'])) {
+                // Installation du cookie utilisateur
+                setcookie("remember_forum_user", $r['pseudo'], time() +(86400*30), "/");
+                // Installation du cookie mot de passe
+                setcookie("remember_forum_key", $r['pass'], time() +(86400*30), "/");
+            }
             // On redirige sur la page index
             header('location:index.php');
         } else {
@@ -23,5 +41,4 @@ if($_POST) {
     } else {
         echo 'adresse mail invalide';
     }
-
 }
