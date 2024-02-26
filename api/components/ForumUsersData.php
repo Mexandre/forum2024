@@ -15,7 +15,7 @@ if ($method == 'GET') {
         $query = htmlspecialchars($_GET['q']);
 
         // Effectuez votre recherche dans la base de données
-        $stmt = $cnx->prepare("SELECT * FROM forum_users WHERE pseudo LIKE ?");
+        $stmt = $cnx->prepare("SELECT * FROM utilisateur WHERE pseudo LIKE ?");
         $stmt->execute(["%$query%"]);
         $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

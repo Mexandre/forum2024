@@ -4,7 +4,7 @@ if(!isset($_GET['type'])) {
     <section id="user">
         <form id="user-create">
             <h2>Créer un compte</h2>
-        <label for="pseudo">Pseudo</label><input type="text" name="pseudo" id="pseudo">
+            <label for="pseudo">Pseudo</label><input type="text" name="pseudo" id="pseudo">
             <label for="email">Email</label><input type="text" name="email" id="email">
             <label for="mdp">Mot de passe</label><input type="text" name="mdp" id="mdp">
             <label for="birth">Mot de passe</label><input type="datetime-local" name="birth" id="birth">
@@ -15,4 +15,4 @@ if(!isset($_GET['type'])) {
    <?php
 }
 ?>
-<script src="../assets/js/users.js"></script>
+<script src="../assets/js/userCreate.js"></script>
