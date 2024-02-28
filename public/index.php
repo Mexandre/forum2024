@@ -1,16 +1,6 @@
 
 <?php
 session_start();
-// if(isset($_COOKIE['remember_forum_user'])) {
-//     require_once('../api/config/bdd.php');
-//     // On cherche l'utilisateur
-//     $s = $cnx->prepare("SELECT * FROM utilisateur WHERE pseudo = ? AND pass=? ");
-//     $s->execute([$_COOKIE['remember_forum_user'], $_COOKIE['remember_forum_key']]);
-//     $r = $s->fetch();
-//     $_SESSION['id'] = $r['id'];
-//     $_SESSION['pseudo'] = $r['pseudo'];
-//     $_SESSION['email'] = $r['mail'];
-// }    
 if(isset($_COOKIE['forum_user_token'])) {
     require_once('../api/config/bdd.php');
     // On cherche l'utilisateur
