@@ -8,6 +8,12 @@ if (session_status() == PHP_SESSION_NONE) {
 // Requête pour récupérer tous les thèmes de la table "forum_theme"
 $requete = "SELECT nom FROM forum_theme";
 
+if (!isset($_SESSION['id'])) {
+    // Utilisateur non connecté, rediriger vers la page de connexion
+    header("Location: index.php"); // Remplacez login.php par le chemin de votre page de connexion
+    exit;
+}
+
 try {
     // Exécution de la requête avec la connexion PDO existante
     $resultat = $cnx->query($requete);
