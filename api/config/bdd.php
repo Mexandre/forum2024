@@ -1,6 +1,6 @@
 <?php
 $host = "localhost";
-$db = "forum";
+$db = "Forum";
 $var = "charset=utf8";
 $user = "root";
 $pass = "root";
@@ -10,3 +10,4 @@ try {
 catch (PDOException $e){
     die("Connexion impossible". $e->getMessage());
 }
+?>

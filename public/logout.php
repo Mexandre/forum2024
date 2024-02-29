@@ -5,3 +5,4 @@ session_unset();
 setcookie('forum_user_token', '', time() - 3600, '/');
 
 header('location:index.php');
+?>

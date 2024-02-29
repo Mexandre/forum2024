@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Quicksand:wght@300..700&display=swap");
 * {
   box-sizing: border-box;
@@ -66,6 +67,80 @@ body {
   font-family: "Oswald", sans-serif;
   font-weight: normal;
   font-size: 2rem;
+}
+#user #user-create input[type=checkbox] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #999;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+}
+#user #user-create input[type=checkbox]:checked::before {
+  content: "•"; /* Utilisation d'un point Unicode pour représenter la coche */
+  font-size: 1.2em;
+  color: #999;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+#user .form-check {
+  --border:#d1d5db;
+  --cursor:#89909e;
+  --checked:#1771e6;
+  --checked-cursor: #fff;
+  position: relative;
+}
+#user .form-check input {
+  position: absolute;
+  opacity: 0;
+}
+#user .form-check label {
+  display: grid;
+  grid-template-columns: 2em 1fr;
+  grid-template-areas: "checkbox label";
+  gap: 0.7em;
+}
+#user .form-check label::before,
+#user .form-check label::after {
+  grid-area: checkbox;
+  content: "";
+  display: block;
+  margin-top: 0.1em;
+}
+#user .form-check label::before {
+  width: 100%;
+  height: 1em;
+  border-radius: 1em;
+  border: solid 1px var(--border);
+  transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+#user .form-check label::after {
+  position: relative;
+  left: 2px;
+  top: 2px;
+  width: calc(1em - 2px);
+  height: calc(1em - 2px);
+  border-radius: 50%;
+  background-color: var(--cursor);
+  transition: background-color 0.3s, transform 0.3s;
+}
+#user .form-check input:checked + label::before {
+  background-color: var(--checked);
+  border-color: var(--checked);
+}
+#user .form-check input:checked + label::after {
+  background-color: var(--checked-cursor);
+  transform: translateX(1em);
+}
+#user .form-check input:focus + label::before {
+  box-shadow: 0 0 0 0.25em #c4dbf9;
+  border-color: var(--checked);
 }
 #user form {
   display: flex;
