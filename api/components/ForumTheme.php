@@ -15,13 +15,7 @@ try {
         echo "<div class='themes-container'>";
         while ($ligne = $resultat->fetch(PDO::FETCH_ASSOC)) {
             // Affichage de chaque thème comme un lien cliquable
-            echo "<span><a href='#'>" . $ligne['nom'] . "</a></span>";
-            $compteur++;
-
-            // Ajouter un saut de ligne après chaque troisième thème
-            if ($compteur % 3 == 0) {
-                echo "<br>";
-            }
+            echo "<a href='#'>" . $ligne['nom'] . "</a>";
         }
         echo "</div>";
     } else {
