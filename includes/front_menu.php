@@ -9,12 +9,13 @@
         // si on est loggué, on dit bonjour
         if (isset($_SESSION['pseudo'])) {
             echo "Bonjour " . $_SESSION['pseudo'];
-            echo '<a href="logout.php">&#10151;</a>';
+            echo '<a href="?action=logout">&#10151;</a>';
         } else {
             echo '<a href="?action=login">Se connecter</a>';
-            echo '<a href="?action=users">Créer un compte</a>';
+            echo '<a href="?action=newUsers">Créer un compte</a>';
         }
     ?>
+
     </nav>
 </header>
 

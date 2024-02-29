@@ -101,7 +101,7 @@ function displayUpdateForm(result) {
     const emailInput = document.createElement('input');
     emailInput.type = 'email';
     emailInput.name = 'email';
-    emailInput.value = result.mail;
+    emailInput.value = result.email;
     form.appendChild(emailInput);
 
     // Ajoute un label et un champ pour le mot de passe
