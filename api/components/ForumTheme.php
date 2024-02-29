@@ -1,11 +1,10 @@
 <?php
-error_reporting(E_ALL);
-ini_set("display_errors", 1);
-require_once('../config/bdd.php');
+// Requête pour récupérer tous les thèmes de la table "forum_theme"
+require_once('../api/config/bdd.php');
+
 try {
-    // Requête pour récupérer tous les thèmes de la table "forum_theme"
-    $requete = "SELECT nom FROM forum_theme";
     // Exécution de la requête avec la connexion PDO existante
+    $requete = "SELECT nom FROM forum_theme";
     $resultat = $cnx->query($requete);
 
     // Vérifier s'il y a des résultats
@@ -17,6 +16,12 @@ try {
         while ($ligne = $resultat->fetch(PDO::FETCH_ASSOC)) {
             // Affichage de chaque thème comme un lien cliquable
             echo "<span><a href='#'>" . $ligne['nom'] . "</a></span>";
+            $compteur++;
+
+            // Ajouter un saut de ligne après chaque troisième thème
+            if ($compteur % 3 == 0) {
+                echo "<br>";
+            }
         }
         echo "</div>";
     } else {
@@ -34,7 +39,7 @@ div.themes-container {
 }
 
 /* Style pour chaque thème */
-div.themes-container span {
+div.themes-container a {
     width: calc(33.33% - 20px); /* Environ 33.33% de la largeur du conteneur moins les marges */
     margin: 10px;
     background-color: #f0f0f0;
@@ -45,7 +50,7 @@ div.themes-container span {
 }
 
 /* Style pour les liens dans les thèmes */
-div.themes-container span a {
+div.themes-container a {
     text-decoration: none;
     color: #333;
     font-weight: bold;
