@@ -45,6 +45,9 @@ switch ($action) { // Switch sur la variable d'action
     case 'login':
         require_once(INC . "forum_user_form_login.php"); // Inclusion du formulaire de connexion au forum
         break;
+    case 'logout':
+        require_once(API . "ForumUsersLogout.php"); // Inclusion du formulaire de connexion au forum
+        break;
     case 'newUsers':
         require_once(INC . "forum_user_form_create.php"); // Inclusion du formulaire d'inscription de nouveaux utilisateurs
         break;
@@ -57,10 +60,10 @@ switch ($action) { // Switch sur la variable d'action
             default:
                 require_once(INC . "forum_user_form_find.php"); // Inclusion de la page de recherche d'utilisateurs
                 break;
-            case 'edit':
-                require_once(INC . "forum_user_form_edit.php"); // Inclusion du formulaire de modification d'utilisateur
-                break;
-        }
+                case 'edit':
+                    require_once(INC . "forum_user_form_edit.php"); // Inclusion du formulaire de modification d'utilisateur
+                    break;
+            }
         break;
 }
 

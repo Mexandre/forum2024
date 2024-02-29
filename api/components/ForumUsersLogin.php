@@ -2,7 +2,7 @@
 header('Content-Type: application/json'); // Définit le type de contenu attendu en réponse
 
 // Connexion à la base de données
-require_once('../api/config/bdd.php');
+require_once('../config/bdd.php');
 
 $response = ['success' => false, 'message' => 'Une erreur est survenue'];
 
@@ -28,8 +28,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['email'] = $r['mail'];
 
             if (isset($data['remember'])) {
-                // Traitement pour "Se souvenir de moi"
-            }
+                $token = password_hash(random_bytes(32), PASSWORD_DEFAULT); // Génération d'un jeton aléatoire pour se souvenir de l'utilisateur
+
+                $ins = $cnx->prepare("UPDATE utilisateur SET jeton = ? WHERE id = ?"); // Préparation de la requête SQL pour mettre à jour le jeton dans la base de données
+                $ins->execute([$token, $_SESSION['id']]); // Exécution de la requête de mise à jour du jeton
+
+                // Création d'un cookie avec le jeton et définition de sa durée de validité (par exemple, un mois)
+                setcookie('forum_user_token', $token, time() + (60 * 60 * 24 * 30), "/");            }
 
             $response = ['success' => true, 'message' => 'Connexion réussie'];
         } else {
