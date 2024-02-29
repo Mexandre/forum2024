@@ -1,39 +1,22 @@
 <?php
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-
-// Requête pour récupérer tous les thèmes de la table "forum_theme"
-$requete = "SELECT nom FROM forum_theme";
-
-if (!isset($_SESSION['id'])) {
-    // Utilisateur non connecté, rediriger vers la page de connexion
-    header("Location: index.php"); // Remplacez login.php par le chemin de votre page de connexion
-    exit;
-}
-
+require_once('../config/bdd.php');
 try {
+    // Requête pour récupérer tous les thèmes de la table "forum_theme"
+    $requete = "SELECT nom FROM forum_theme";
     // Exécution de la requête avec la connexion PDO existante
     $resultat = $cnx->query($requete);
 
     // Vérifier s'il y a des résultats
     if ($resultat->rowCount() > 0) {
-        // Initialisation du compteur pour compter les thèmes affichés
-        $compteur = 0;
+
 
         // Affichage des thèmes
         echo "<div class='themes-container'>";
         while ($ligne = $resultat->fetch(PDO::FETCH_ASSOC)) {
             // Affichage de chaque thème comme un lien cliquable
             echo "<span><a href='#'>" . $ligne['nom'] . "</a></span>";
-            $compteur++;
-
-            // Ajouter un saut de ligne après chaque troisième thème
-            if ($compteur % 3 == 0) {
-                echo "<br>";
-            }
         }
         echo "</div>";
     } else {
