@@ -98,11 +98,11 @@ function displayUpdateForm(result) {
     emailLabel.textContent = 'Email:';
     form.appendChild(emailLabel);
 
-    const emailInput = document.createElement('input');
-    emailInput.type = 'email';
-    emailInput.name = 'email';
-    emailInput.value = result.email;
-    form.appendChild(emailInput);
+    const mailInput = document.createElement('input');
+    mailInput.type = 'mail';
+    mailInput.name = 'mail';
+    mailInput.value = result.mail;
+    form.appendChild(mailInput);
 
     // Ajoute un label et un champ pour le mot de passe
     const passwordLabel = document.createElement('label');
@@ -180,6 +180,7 @@ function updateData(formData) {
     .then(data => {
         // Affiche un message de réussite ou gère les erreurs
         console.log('Données mises à jour avec succès:', data);
+        document.getElementById("user").innerHTML = 'Données mises à jour avec succès'
         // Vous pouvez ajouter ici un message de confirmation ou une redirection vers une autre page
     })
     .catch(error => {
