@@ -39,8 +39,6 @@ $type = isset($_GET['type']) ? $_GET['type'] : ""; // Récupération de la valeu
 switch ($action) { // Switch sur la variable d'action
     default:
         // Page par défaut
-        // echo $_COOKIE['remember_forum_user'];
-        // echo $_COOKIE['remember_forum_key'];
         break;
     case 'login':
         require_once(INC . "forum_user_form_login.php"); // Inclusion du formulaire de connexion au forum
