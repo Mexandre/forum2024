@@ -1,21 +1,10 @@
 <?php
-error_reporting(E_ALL);
-ini_set("display_errors", 1);
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-
 // Requête pour récupérer tous les thèmes de la table "forum_theme"
-$requete = "SELECT nom FROM forum_theme";
-
-if (!isset($_SESSION['id'])) {
-    // Utilisateur non connecté, rediriger vers la page de connexion
-    header("Location: index.php"); // Remplacez login.php par le chemin de votre page de connexion
-    exit;
-}
+require_once('../api/config/bdd.php');
 
 try {
     // Exécution de la requête avec la connexion PDO existante
+    $requete = "SELECT nom FROM forum_theme";
     $resultat = $cnx->query($requete);
 
     // Vérifier s'il y a des résultats
