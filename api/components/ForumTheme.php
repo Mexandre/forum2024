@@ -52,6 +52,7 @@ div.themes-container span {
     padding: 10px;
     border-radius: 5px;
     text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6);
 }
 
 /* Style pour les liens dans les thèmes */
@@ -59,5 +60,6 @@ div.themes-container span a {
     text-decoration: none;
     color: #333;
     font-weight: bold;
+    text-transform: uppercase;
 }
 </style>
