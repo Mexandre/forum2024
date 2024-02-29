@@ -7,7 +7,7 @@ document.getElementById('user-create').addEventListener('submit', function(e) {
         remember: document.getElementById('remember').checked
     };
 
-    fetch('ForumLoginAttempt.php', {
+    fetch('../api/components/ForumUsersLogin.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
