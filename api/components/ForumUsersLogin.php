@@ -26,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['id'] = $r['id'];
             $_SESSION['pseudo'] = $r['pseudo'];
             $_SESSION['email'] = $r['mail'];
+            $_SESSION['niveau'] = $r['niveau_id'];
 
             if (isset($data['remember'])) {
                 $token = password_hash(random_bytes(32), PASSWORD_DEFAULT); // Génération d'un jeton aléatoire pour se souvenir de l'utilisateur

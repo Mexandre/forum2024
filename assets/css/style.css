@@ -145,7 +145,7 @@ body {
 #user form {
   display: flex;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: stretch;
   flex-direction: column;
   text-align: left;
   font-size: 1.3rem;
@@ -194,13 +194,13 @@ body {
   cursor: pointer;
 }
 #user form button#delete {
-  margin-top: -41px;
-  margin-left: auto;
   background: rgb(158, 0, 49);
 }
-#user form #delete {
-  margin-top: -41px;
-  margin-left: auto;
+#user form button#Avertir {
+  background: orange;
+}
+#user form button#Bloque {
+  background: rgb(13, 27, 42);
 }
 
 div.themes-container {
