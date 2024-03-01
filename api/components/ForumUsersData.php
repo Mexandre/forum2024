@@ -86,7 +86,7 @@ if ($method == 'POST') {
 if ($method == 'PATCH') {
     // Utilisez htmlspecialchars pour sécuriser les données entrantes
     $pseudo = htmlspecialchars($data['pseudo']);
-    $email = filter_var($data['email'], FILTER_VALIDATE_EMAIL);
+    $email = filter_var($data['mail'], FILTER_VALIDATE_EMAIL);
     $mdp = password_hash($data['mdp'], PASSWORD_DEFAULT);
     $id = htmlspecialchars($data['id']);
 

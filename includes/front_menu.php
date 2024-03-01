@@ -14,6 +14,9 @@
             echo '<a href="?action=login">Se connecter</a>';
             echo '<a href="?action=newUsers">Créer un compte</a>';
         }
+        if ($_SESSION['niveau'] == 4) {
+            echo '<a href="?action=admin">Administration</a>';
+        }
     ?>
 
     </nav>
