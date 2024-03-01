@@ -1,137 +1,160 @@
 <?php
+// Définit les en-têtes CORS pour autoriser les requêtes depuis n'importe quelle origine
 header("Access-Control-Allow-Origin: *");
+// Définit les méthodes HTTP autorisées
 header("Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE");
+// Définit les en-têtes autorisés dans la requête
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
-// On récupère la méthode d'envoie du json (GET/POST/PUT/PATCH/DELETE)
-$method = $_SERVER['REQUEST_METHOD'];
-// On réception le json et on le transforme en Array
-$data = json_decode(file_get_contents('php://input'), true);
-// Connexion à la BDD
-require_once('../config/bdd.php');
-if ($method == 'GET') {
-    if (isset($_GET['q'])) {
-        // Récupérez la valeur du paramètre 'q' et nettoyez-la pour éviter les injections SQL
-        $query = htmlspecialchars($_GET['q']);
 
-        // Effectuez votre recherche dans la base de données
+// Récupère la méthode de la requête HTTP
+$method = $_SERVER['REQUEST_METHOD'];
+// Récupère les données de la requête au format JSON et les décode en un tableau associatif
+$data = json_decode(file_get_contents('php://input'), true);
+
+// Inclut le fichier de configuration de la base de données
+require_once('../config/bdd.php');
+
+// Gestion des requêtes GET
+if ($method == 'GET') {
+    // Vérifie si le paramètre 'q' est présent dans la requête GET
+    if (isset($_GET['q'])) {
+        // Récupère et nettoie la valeur du paramètre 'q' de la requête
+        $query = htmlspecialchars($_GET['q']);
+        // Prépare et exécute une requête SQL pour sélectionner les utilisateurs dont le pseudo est similaire à la valeur de 'q'
         $stmt = $cnx->prepare("SELECT * FROM utilisateur WHERE pseudo LIKE ?");
         $stmt->execute(["%$query%"]);
+        // Récupère tous les résultats de la requête sous forme de tableau associatif
         $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        // Retournez les résultats au format JSON
-      //  echo json_encode($results);
+    } else if (isset($_GET['getLevels'])) {
+        // Prépare et exécute une requête SQL pour sélectionner les identifiants et les niveaux des utilisateurs
+        $stmt = $cnx->prepare("SELECT id, niveau FROM utilisateur_niveau");
+        $stmt->execute();
+        // Récupère tous les résultats de la requête sous forme de tableau associatif
+        $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
     } else {
-        // Si le paramètre 'q' n'est pas présent, vous pouvez renvoyer un message d'erreur ou une réponse vide selon vos besoins.
+        // Retourne une réponse JSON indiquant que le paramètre 'q' est manquant
         echo json_encode(array('error' => 'Le paramètre "q" est manquant'));
-    } 
+    }
 }
+
+// Gestion des requêtes POST
 if ($method == 'POST') {
-    // Récupération des données JSON de la requête
+    // Récupère et décode les données de la requête au format JSON
     $data = json_decode(file_get_contents('php://input'), true);
 
-    // Vérification si les données envoyées contiennent les clés nécessaires pour déterminer s'il s'agit d'une demande de création d'utilisateur ou de création de sujet
+    // Vérifie si les données requises pour créer un utilisateur sont présentes
     if (isset($data['pseudo'], $data['email'], $data['mdp'], $data['birth'])) {
-        // Connexion à la base de données
-        require_once('../config/bdd.php');
-
-        // Utilisation de htmlspecialchars pour sécuriser les données entrantes
+        // Nettoie les données et les prépare pour l'insertion dans la base de données
         $pseudo = htmlspecialchars($data['pseudo']);
         $email = filter_var($data['email'], FILTER_VALIDATE_EMAIL);
         $mdp = password_hash($data['mdp'], PASSWORD_DEFAULT);
         $birth = htmlspecialchars($data['birth']);
         
-        // Utilisation de requêtes préparées pour éviter les injections SQL
+        // Prépare et exécute une requête SQL pour insérer un nouvel utilisateur dans la base de données
         $ins = $cnx->prepare("INSERT INTO utilisateur SET pseudo = :pseudo, mail= :email, pass= :mdp, date_naiss= :birth, date_ins= :date");
-        $ins->bindParam(':pseudo', $pseudo);
-        $ins->bindParam(':email', $email);
-        $ins->bindParam(':mdp', $mdp);
-        $ins->bindParam(':birth', $birth);
-        $ins->bindParam(':date', date("Y-m-d H:i:s"));
-        $ins->execute();
+        $ins->bindParam(':pseudo', $pseudo); // Lie la variable pseudo à un paramètre dans la requête
+        $ins->bindParam(':email', $email); // Lie la variable email à un paramètre dans la requête
+        $ins->bindParam(':mdp', $mdp); // Lie la variable mdp à un paramètre dans la requête
+        $ins->bindParam(':birth', $birth); // Lie la variable birth à un paramètre dans la requête
+        $ins->bindParam(':date', date("Y-m-d H:i:s")); // Lie la date actuelle à un paramètre dans la requête
+        $ins->execute(); // Exécute la requête SQL
 
-        // Préparation de la réponse dans un tableau
+        // Retourne une réponse JSON indiquant que l'utilisateur a été créé avec succès
         $response = [
             'success' => true,
             'msg' => 'Utilisateur créé avec succès'
         ];
     } elseif (isset($data['sujet'])) {
-        // Connexion à la base de données
-        require_once('../config/bdd.php');
-
-        // Utilisation de htmlspecialchars pour sécuriser les données entrantes
+        // Gestion de la création d'un sujet sur le forum
         $sujet = htmlspecialchars($data['sujet']);
         $theme = htmlspecialchars($data['theme']);
-        $userId = $_SESSION['id'];
-    
-        // Utilisation de requêtes préparées pour éviter les injections SQL
+        $userId = $_SESSION['id']; // Utilisateur connecté (supposé)
+
+        // Prépare et exécute une requête SQL pour insérer un nouveau sujet dans le forum
         $ins = $cnx->prepare("INSERT INTO forum_sujet (id_utilisateur, id_theme, titre) VALUES (:userId, :theme, :sujet)");
-        $ins->bindParam(':userId', $userId);
-        $ins->bindParam(':theme', $theme);
-        $ins->bindParam(':sujet', $sujet);
-        $ins->execute();
-    
-        // Préparation de la réponse dans un tableau
+        $ins->bindParam(':userId', $userId); // Lie la variable userId à un paramètre dans la requête
+        $ins->bindParam(':theme', $theme); // Lie la variable theme à un paramètre dans la requête
+        $ins->bindParam(':sujet', $sujet); // Lie la variable sujet à un paramètre dans la requête
+        $ins->execute(); // Exécute la requête SQL
+
+        // Retourne une réponse JSON indiquant que le sujet a été créé avec succès
         $response = [
             'success' => true,
             'msg' => 'Sujet créé avec succès'
         ];
     } else {
-        // Si les clés nécessaires ne sont pas présentes dans les données envoyées, renvoyer une erreur
+        // Retourne une réponse JSON indiquant que les données nécessaires pour créer un utilisateur, un sujet ou un avertissement sont manquantes
         $response = [
             'success' => false,
-            'msg' => 'Données manquantes pour créer un utilisateur ou un sujet' . $e->getMessage()
+            'msg' => 'Données manquantes pour créer un utilisateur, un sujet ou un avertissement'
         ];
     }
 }
+
+// Gestion des requêtes PATCH
 if ($method == 'PATCH') {
-    // Utilisez htmlspecialchars pour sécuriser les données entrantes
+    // Récupère les données de la requête pour mettre à jour un utilisateur
     $pseudo = htmlspecialchars($data['pseudo']);
-    $email = filter_var($data['email'], FILTER_VALIDATE_EMAIL);
+    $email = filter_var($data['mail'], FILTER_VALIDATE_EMAIL);
     $mdp = password_hash($data['mdp'], PASSWORD_DEFAULT);
     $id = htmlspecialchars($data['id']);
+    $rang = htmlspecialchars($data['rang']); // Ajout de la gestion du rang
 
-    // Utilisez des requêtes préparées pour éviter les injections SQL
-    $ins = $cnx->prepare("UPDATE utilisateur SET pseudo = :pseudo, mail = :email" . ($mdp ? ", pass = :mdp" : "") . " WHERE id = :id");
-    $ins->bindParam(':pseudo', $pseudo);
-    $ins->bindParam(':email', $email);
-    if ($mdp) {
-        $ins->bindParam(':mdp', $mdp);
+    // Vérifie s'il y a une demande d'avertissement
+    if (isset($data['avertissement'])) {
+        // Incrémente la colonne 'avertissement' dans la base de données
+        $insAvertissement = $cnx->prepare("UPDATE utilisateur SET avertissement = avertissement + 1 WHERE id = :id");
+        $insAvertissement->bindParam(':id', $id);
+        $insAvertissement->execute();
     }
-    $ins->bindParam(':id', $id);
-    $ins->execute();
 
-    // Préparer la réponse dans un tableau
+    // Prépare et exécute une requête SQL pour mettre à jour un utilisateur dans la base de données
+    $ins = $cnx->prepare("UPDATE utilisateur SET pseudo = :pseudo, mail = :email" . ($mdp ? ", pass = :mdp" : "") . ", niveau_id = :rang WHERE id = :id");
+    $ins->bindParam(':pseudo', $pseudo); // Lie la variable pseudo à un paramètre dans la requête
+    $ins->bindParam(':email', $email); // Lie la variable email à un paramètre dans la requête
+    if ($mdp) {
+        $ins->bindParam(':mdp', $mdp); // Lie la variable mdp à un paramètre dans la requête si elle est définie
+    }
+    $ins->bindParam(':id', $id); // Lie la variable id à un paramètre dans la requête
+    $ins->bindParam(':rang', $rang); // Lie la variable rang à un paramètre dans la requête
+    $ins->execute(); // Exécute la requête SQL
+
+    // Retourne une réponse JSON indiquant que les données ont été mises à jour avec succès
     $response = [
         'success' => true,
         'msg' => 'Données mises à jour avec succès'
     ];
 }
+
+
+// Gestion des requêtes DELETE
 if ($method == 'DELETE') {
-    // Vérifiez s'il y a un ID utilisateur dans la requête
+    // Vérifie si l'identifiant de l'utilisateur à supprimer est présent dans la requête
     if (!isset($_GET['id']) || empty($_GET['id'])) {
-        // Si l'ID est manquant, renvoyer une erreur
+        // Retourne une réponse JSON indiquant que l'identifiant de l'utilisateur est manquant dans la requête
         $response = [
             'success' => false,
             'msg' => 'ID utilisateur manquant dans la requête'
         ];
     } else {
-        // Récupérez l'ID de l'utilisateur depuis la requête
+        // Récupère et nettoie l'identifiant de l'utilisateur à supprimer
         $userId = htmlspecialchars($_GET['id']);
 
-        // Préparez et exécutez la requête de suppression dans la base de données
+        // Prépare et exécute une requête SQL pour supprimer un utilisateur de la base de données
         $stmt = $cnx->prepare("DELETE FROM utilisateur WHERE id = :id");
-        $stmt->bindParam(':id', $userId);
-        $stmt->execute();
+        $stmt->bindParam(':id', $userId); // Lie la variable userId à un paramètre dans la requête
+        $stmt->execute(); // Exécute la requête SQL
 
-        // Préparez la réponse dans un tableau
+        // Retourne une réponse JSON indiquant que l'utilisateur a été supprimé avec succès
         $response = [
             'success' => true,
             'msg' => 'Utilisateur supprimé avec succès'
         ];
     }
 }
-// On indique qu'on renvoie un JSON
+
+// Définit le type de contenu de la réponse comme JSON
 header('Content-type: application/json');
-// On transforme l'array en JSON et on l'affiche en réponse.
+// Convertit la réponse en format JSON et l'affiche
 echo json_encode($response);
 ?>

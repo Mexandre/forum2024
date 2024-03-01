@@ -1,12 +1,12 @@
 <?php
 session_start(); // Démarrage de la session
 
-if (!isset($_SESSION['id']) && isset($_COOKIE['forum_user_token'])) { // Si l'utilisateur n'est pas connecté mais qu'un cookie contenant le jeton est présent
+if (!isset($_SESSION['id']) && isset($_COOKIE['forum_user_token'])) { // Vérifie si l'utilisateur n'est pas connecté mais qu'un cookie contenant le jeton est présent
     require_once('../api/config/bdd.php'); // Inclusion du fichier de configuration de la base de données
 
     $s = $cnx->prepare("SELECT * FROM utilisateur WHERE jeton = ?"); // Préparation de la requête SQL pour récupérer l'utilisateur par jeton
-    $s->execute([$_COOKIE['forum_user_token']]); // Exécute la requête avec le jeton stocké dans le cookie
-    $r = $s->fetch(); // Récupère la première ligne de résultat
+    $s->execute([$_COOKIE['forum_user_token']]); // Exécution de la requête avec le jeton stocké dans le cookie
+    $r = $s->fetch(); // Récupération de la première ligne de résultat
 
     if ($r && is_array($r) && isset($r['id'])) { // Vérifie si un utilisateur correspondant au jeton existe
         $_SESSION['id'] = $r['id']; // Stocke l'ID de l'utilisateur dans la session
@@ -39,31 +39,40 @@ $type = isset($_GET['type']) ? $_GET['type'] : ""; // Récupération de la valeu
 switch ($action) { // Switch sur la variable d'action
     default:
         // Page par défaut
-        // echo $_COOKIE['remember_forum_user'];
-        // echo $_COOKIE['remember_forum_key'];
         break;
     case 'login':
         require_once(INC . "forum_user_form_login.php"); // Inclusion du formulaire de connexion au forum
         break;
     case 'logout':
-        require_once(API . "ForumUsersLogout.php"); // Inclusion du formulaire de connexion au forum
+        require_once(API . "ForumUsersLogout.php"); // Inclusion du formulaire de déconnexion du forum
         break;
     case 'newUsers':
         require_once(INC . "forum_user_form_create.php"); // Inclusion du formulaire d'inscription de nouveaux utilisateurs
         break;
     case 'topics': 
-        require_once(API . "ForumTheme.php");
+        require_once(INC . "forum_themes.php"); // Inclusion de la page des sujets du forum
         break;
-    case 'users':
-        // page utilisateur
+    case 'admin':
+        // Page d'administration
         switch ($type) { // Switch sur le type
             default:
-                require_once(INC . "forum_user_form_find.php"); // Inclusion de la page de recherche d'utilisateurs
+                require_once(INC . "forum_admin_form_find.php"); // Inclusion de la page de recherche d'utilisateurs pour l'administration
                 break;
-                case 'edit':
-                    require_once(INC . "forum_user_form_edit.php"); // Inclusion du formulaire de modification d'utilisateur
-                    break;
-            }
+            case 'edit':
+                require_once(INC . "forum_user_form_edit.php"); // Inclusion du formulaire de modification d'utilisateur pour l'administration
+                break;
+        }
+        break;
+    case 'users':
+        // Page utilisateur
+        switch ($type) { // Switch sur le type
+            default:
+                require_once(INC . "forum_user_form_find.php"); // Inclusion de la page de recherche d'utilisateurs pour les utilisateurs
+                break;
+            case 'edit':
+                require_once(INC . "forum_user_form_edit.php"); // Inclusion du formulaire de modification d'utilisateur pour les utilisateurs
+                break;
+        }
         break;
 }
 

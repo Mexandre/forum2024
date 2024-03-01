@@ -118,6 +118,15 @@ body {
               background-color: var(--checked);
               border-color: var(--checked);
       }
+            input {
+                &:checked {
+                    + label {
+                        &::after {
+                            
+                        }
+                    }
+                }
+            }
           input:checked + label::after{
               background-color: var(--checked-cursor);
               transform: translateX(1em);
@@ -131,7 +140,7 @@ body {
     margin:auto;       
     @include flexbox(space-around, flex-start);
       form {
-        @include flexbox(flex-start, flex-start, column);
+        @include flexbox(flex-start, stretch, column);
         text-align: left;
         font-size:1.3rem;
         max-width:300px;
@@ -177,15 +186,19 @@ body {
             font-family:$title;
             cursor: pointer;
             &#delete {
-                margin-top: -41px;
-                margin-left: auto;
+                
                 background: $red;
             }
+            &#Avertir {
+            
+                background: orange;
+            }
+            &#Bloque{
+                
+                background: $black;
+            }
         }
-        #delete {
-            margin-top: -41px;
-            margin-left: auto;
-        }
+       
     }
 }
 div{
