@@ -52,7 +52,7 @@ switch ($action) { // Switch sur la variable d'action
         require_once(INC . "forum_user_form_create.php"); // Inclusion du formulaire d'inscription de nouveaux utilisateurs
         break;
     case 'topics': 
-        require_once(API . "ForumTheme.php");
+        require_once(INC . "forum_theme_display.php");
         break;
     case 'users':
         // page utilisateur
