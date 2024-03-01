@@ -63,6 +63,9 @@ switch ($action) { // Switch sur la variable d'action
                     break;
             }
         break;
+    case 'profil':
+        require_once(INC . "forum_profil_form_create.php");
+        break;
 }
 
 require_once(INC . "front_bottom.php"); // Inclusion du fichier bottom.php contenant le code HTML du pied de page
