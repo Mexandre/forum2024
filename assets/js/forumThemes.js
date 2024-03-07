@@ -5,9 +5,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const backButton = document.createElement('button');
     backButton.textContent = 'Retour aux thèmes';
 
-    // Cacher le formulaire de création de sujet au chargement de la page
-    document.getElementById('createSubjectForm').style.display = 'none';
-
     // Fonction pour charger les sujets en fonction de l'ID du thème
     function chargerSujets(themeId, themeNom) {
         fetch(`../api/components/ForumSujet.php?theme_id=${themeId}`)
@@ -32,22 +29,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 // Masquer le conteneur des thèmes lors de l'affichage des sujets
                 container.style.display = 'none';
-                // Afficher le formulaire de création de sujet
-                document.getElementById('createSubjectForm').style.display = 'block';
                 
                 // Stocke l'ID du thème sélectionné
                 sessionStorage.setItem('selectedThemeId', themeId);
             })
             .catch(error => console.error('Erreur lors de la récupération des sujets:', error));
-            
+    
         // Afficher le bouton de retour arrière et écouter l'événement
         backButton.addEventListener('click', function() {
-            sujetsContainer.innerHTML = ''; // Vider le conteneur des sujets
-            backButton.style.display = 'none'; // Cacher le bouton de retour arrière
-            container.style.display = 'flex'; // Afficher le conteneur des thèmes
-            titreH1.textContent = 'Thèmes du Forum'; // Rétablir le titre
-            // Cacher le formulaire de création de sujet
-            document.getElementById('createSubjectForm').style.display = 'none';
+            // Rediriger l'utilisateur vers la page index.php?action=topics
+            window.location.href = 'index.php?action=topics';
         });
         titreH1.insertAdjacentElement('afterend', backButton); // Insérer le bouton après le titre
     }

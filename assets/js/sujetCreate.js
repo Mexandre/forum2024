@@ -1,5 +1,3 @@
-const form = document.querySelector("#createSubjectForm")
-
 form.addEventListener("submit", (e) => {
     e.preventDefault() // Empêche le rechargement de la page
     // On récupère les données du formulaire
@@ -13,7 +11,7 @@ form.addEventListener("submit", (e) => {
     console.log(objectJson)
     // On contrôle le Json
     
-    fetch('../includes/forum_themes.php', {
+    fetch('../components/forumSujet.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json' 

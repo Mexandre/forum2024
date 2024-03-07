@@ -54,33 +54,6 @@ if ($method == 'POST') {
             'success' => true,
             'msg' => 'Utilisateur créé avec succès'
         ];
-    } elseif (isset($data['sujet'])) {
-        // Connexion à la base de données
-        require_once('../config/bdd.php');
-
-        // Utilisation de htmlspecialchars pour sécuriser les données entrantes
-        $sujet = htmlspecialchars($data['sujet']);
-        $theme = htmlspecialchars($data['theme']);
-        $userId = $_SESSION['id'];
-    
-        // Utilisation de requêtes préparées pour éviter les injections SQL
-        $ins = $cnx->prepare("INSERT INTO forum_sujet (id_utilisateur, id_theme, titre) VALUES (:userId, :theme, :sujet)");
-        $ins->bindParam(':userId', $userId);
-        $ins->bindParam(':theme', $theme);
-        $ins->bindParam(':sujet', $sujet);
-        $ins->execute();
-    
-        // Préparation de la réponse dans un tableau
-        $response = [
-            'success' => true,
-            'msg' => 'Sujet créé avec succès'
-        ];
-    } else {
-        // Si les clés nécessaires ne sont pas présentes dans les données envoyées, renvoyer une erreur
-        $response = [
-            'success' => false,
-            'msg' => 'Données manquantes pour créer un utilisateur ou un sujet' . $e->getMessage()
-        ];
     }
 }
 if ($method == 'PATCH') {
