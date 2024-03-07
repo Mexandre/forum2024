@@ -11,7 +11,7 @@ form.addEventListener("submit", (e) => {
     console.log(objectJson)
     // On contrôle le Json
     
-    fetch('../components/forumSujet.php', {
+    fetch('../api/components/forumUserData.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json' 
