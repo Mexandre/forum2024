@@ -14,5 +14,6 @@ if (isset($_SESSION['id']) === true) {
     echo "Vous devez être connecté pour créer un sujet. <a href='?action=login'>Se connecter</a>";
 }
 ?>
-<script src="../assets/js/sujetCreate.js"></script>
+<h2 id="msg"></h2>
 <script src="../assets/js/forumThemes.js"></script>
+<script src="../assets/js/sujetCreate.js"></script>

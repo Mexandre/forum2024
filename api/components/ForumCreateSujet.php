@@ -5,6 +5,9 @@ session_start(); // Démarrer la session s'il n'est pas déjà démarré
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Récupération des données JSON de la requête
     $data = json_decode(file_get_contents('php://input'), true);
+    
+    // Débogage : Afficher les données reçues dans les logs du serveur
+    error_log('Données reçues : ' . print_r($data, true));
 
     // Vérifie si l'ID du thème est présent dans les données
     if (isset($data['id_theme']) && !empty($data['id_theme'])) {
@@ -21,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $titre = htmlspecialchars($data['titre']);
 
             // Utilisation de requêtes préparées pour éviter les injections SQL
-            $ins = $cnx->prepare("INSERT INTO forum_sujet SET titre = :titre, id_utilisateur = :id, id_theme = :id_theme");
+            $ins = $cnx->prepare("INSERT INTO forum_sujet SET titre = :titre, id_utilisateur = :id_utilisateur, id_theme = :id_theme");
             $ins->bindParam(':titre', $titre);
             $ins->bindParam(':id_utilisateur', $id_utilisateur);
             $ins->bindParam(':id_theme', $id_theme);

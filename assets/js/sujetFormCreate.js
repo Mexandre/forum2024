@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const createSubjectForm = document.createElement('form');
     createSubjectForm.id = 'createSubjectForm';
     createSubjectForm.innerHTML = `
+        <input type="hidden" id="id_theme" name="id_theme">
         <label for="titre">Titre</label>
         <input type="text" id="titre" name="titre">
         <input type="submit" value="Créer le sujet">

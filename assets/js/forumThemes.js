@@ -1,12 +1,21 @@
 document.addEventListener('DOMContentLoaded', function() {
+    let selectedThemeId = ''; // Variable pour stocker l'ID du thème sélectionné
+
     const container = document.querySelector('.themes-container');
     const sujetsContainer = document.querySelector('.sujets-container');
     const titreH1 = document.querySelector('h1');
     const backButton = document.createElement('button');
     backButton.textContent = 'Retour aux thèmes';
-
+    
     // Fonction pour charger les sujets en fonction de l'ID du thème
     function chargerSujets(themeId, themeNom) {
+        console.log('ID du thème sélectionné :', themeId);
+        console.log('ID du thème sélectionné :', selectedThemeId); // Vérifier la valeur de selectedThemeId
+
+        selectedThemeId = themeId; // Stocke l'ID du thème sélectionné
+        // Mettre à jour la valeur de l'input hidden
+        const inputThemeId = document.querySelector('#id_theme');
+        inputThemeId.value = selectedThemeId;
         fetch(`../api/components/ForumSujet.php?theme_id=${themeId}`)
             .then(response => {
                 if (!response.ok) {
@@ -29,9 +38,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 // Masquer le conteneur des thèmes lors de l'affichage des sujets
                 container.style.display = 'none';
-                
-                // Stocke l'ID du thème sélectionné
-                sessionStorage.setItem('selectedThemeId', themeId);
             })
             .catch(error => console.error('Erreur lors de la récupération des sujets:', error));
     
@@ -77,5 +83,39 @@ document.addEventListener('DOMContentLoaded', function() {
                 link.textContent = theme.nom; // Nom du thème comme texte du lien
                 container.appendChild(link);
             });
-        })
+        });
+
+    const formContainer = document.createElement('div'); // Créez un conteneur pour le formulaire
+    formContainer.id = 'createSubjectFormContainer'; // Donnez un ID au conteneur
+    formContainer.style.display = 'none'; // Cachez le conteneur par défaut
+
+    // Créez le formulaire de création de sujet
+    const createSubjectForm = document.createElement('form');
+    createSubjectForm.id = 'createSubjectForm';
+    createSubjectForm.innerHTML = `
+        <label for="titre">Titre</label>
+        <input type="hidden" id="id_theme" name="id_theme" value="${selectedThemeId}">
+        <input type="text" id="titre" name="titre">
+        <input type="submit" value="Créer le sujet">
+    `;
+
+    formContainer.appendChild(createSubjectForm); // Ajoutez le formulaire au conteneur
+
+    // Ajoutez le conteneur du formulaire à la page
+    document.body.appendChild(formContainer);
+
+    createSubjectForm.addEventListener('submit', function(event) {
+        event.preventDefault(); // Empêche le rechargement de la page
+
+        // Récupérez les données du formulaire et envoyez-les au serveur
+        // Vous devrez implémenter cette partie pour gérer l'envoi des données au serveur
+        const formData = new FormData(createSubjectForm);
+        const titre = formData.get('titre');
+        const id_theme = selectedThemeId; // Utilisez l'ID du thème sélectionné
+
+        // Affichez un message de succès ou d'erreur après l'envoi des données au serveur
+        console.log('Titre du sujet :', titre);
+        console.log('ID du thème :', id_theme);
+        // Vous pouvez maintenant utiliser "titre" et "id_theme" pour envoyer les données au serveur
     });
+});
