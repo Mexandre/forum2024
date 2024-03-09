@@ -2,14 +2,8 @@
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
-header('Content-type: application/json'); 
-
-// Initialisation de la réponse
-$response = ['success' => false, 'msg' => 'Une erreur inattendue s\'est produite'];
-
 // On récupère la méthode d'envoie du json (GET/POST/PUT/PATCH/DELETE)
 $method = $_SERVER['REQUEST_METHOD'];
-$table = 'user';
 // On réception le json et on le transforme en Array
 $data = json_decode(file_get_contents('php://input'), true);
 // Connexion à la BDD
@@ -20,33 +14,39 @@ if ($method == 'GET') {
         $query = htmlspecialchars($_GET['q']);
 
         // Effectuez votre recherche dans la base de données
-        $stmt = $cnx->prepare("SELECT * FROM $table WHERE pseudo LIKE ?");
+        $stmt = $cnx->prepare("SELECT * FROM utilisateur WHERE pseudo LIKE ?");
         $stmt->execute(["%$query%"]);
         $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+        // Retournez les résultats au format JSON
+      //  echo json_encode($results);
     } else {
         // Si le paramètre 'q' n'est pas présent, vous pouvez renvoyer un message d'erreur ou une réponse vide selon vos besoins.
         echo json_encode(array('error' => 'Le paramètre "q" est manquant'));
     } 
 }
 if ($method == 'POST') {
-    try {
-        $hashOptions = [
-            'memory_cost' => 1<<17, // 128MB
-            'time_cost'   => 4,
-            'threads'     => 2,
-        ];
+    // Récupération des données JSON de la requête
+    $data = json_decode(file_get_contents('php://input'), true);
+
+    // Vérification si les données envoyées contiennent les clés nécessaires pour déterminer s'il s'agit d'une demande de création d'utilisateur ou de création de sujet
+    if (isset($data['pseudo'], $data['email'], $data['mdp'], $data['birth'])) {
+        // Connexion à la base de données
+        require_once('../config/bdd.php');
+
+        // Utilisation de htmlspecialchars pour sécuriser les données entrantes
         $pseudo = htmlspecialchars($data['pseudo']);
         $email = filter_var($data['email'], FILTER_VALIDATE_EMAIL);
-        $mdp = password_hash($data['mdp'], PASSWORD_ARGON2ID, $hashOptions);
+        $mdp = password_hash($data['mdp'], PASSWORD_DEFAULT);
         $birth = htmlspecialchars($data['birth']);
         
         // Utilisation de requêtes préparées pour éviter les injections SQL
-        $ins = $cnx->prepare("INSERT INTO $table SET username = :pseudo, email= :email, password= :mdp, birth_date= :birth");
+        $ins = $cnx->prepare("INSERT INTO utilisateur SET pseudo = :pseudo, mail= :email, pass= :mdp, date_naiss= :birth, date_ins= :date");
         $ins->bindParam(':pseudo', $pseudo);
         $ins->bindParam(':email', $email);
         $ins->bindParam(':mdp', $mdp);
         $ins->bindParam(':birth', $birth);
+        $ins->bindParam(':date', date("Y-m-d H:i:s"));
         $ins->execute();
 
         // Préparation de la réponse dans un tableau
@@ -54,13 +54,27 @@ if ($method == 'POST') {
             'success' => true,
             'msg' => 'Utilisateur créé avec succès'
         ];
-    } catch (Exception $e) {
-        $response = ['success' => false, 'msg' => 'Erreur lors du traitement : ' . $e->getMessage()];
-    }
+    } elseif (isset($data['sujet'])) {
+        // Connexion à la base de données
+        require_once('../config/bdd.php');
 
-    // Vérification si les données envoyées contiennent les clés nécessaires pour déterminer s'il s'agit d'une demande de création d'utilisateur ou de création de sujet
-    if (isset($data['pseudo'], $data['email'], $data['mdp'], $data['birth'])) {
-       // Utilisation de htmlspecialchars pour sécuriser les données entrantes
+        // Utilisation de htmlspecialchars pour sécuriser les données entrantes
+        $sujet = htmlspecialchars($data['sujet']);
+        $theme = htmlspecialchars($data['theme']);
+        $userId = $_SESSION['id'];
+    
+        // Utilisation de requêtes préparées pour éviter les injections SQL
+        $ins = $cnx->prepare("INSERT INTO forum_sujet (id_utilisateur, id_theme, titre) VALUES (:userId, :theme, :sujet)");
+        $ins->bindParam(':userId', $userId);
+        $ins->bindParam(':theme', $theme);
+        $ins->bindParam(':sujet', $sujet);
+        $ins->execute();
+    
+        // Préparation de la réponse dans un tableau
+        $response = [
+            'success' => true,
+            'msg' => 'Sujet créé avec succès'
+        ];
     } else {
         // Si les clés nécessaires ne sont pas présentes dans les données envoyées, renvoyer une erreur
         $response = [
@@ -77,7 +91,7 @@ if ($method == 'PATCH') {
     $id = htmlspecialchars($data['id']);
 
     // Utilisez des requêtes préparées pour éviter les injections SQL
-    $ins = $cnx->prepare("UPDATE $table SET pseudo = :pseudo, mail = :email" . ($mdp ? ", pass = :mdp" : "") . " WHERE id = :id");
+    $ins = $cnx->prepare("UPDATE utilisateur SET pseudo = :pseudo, mail = :email" . ($mdp ? ", pass = :mdp" : "") . " WHERE id = :id");
     $ins->bindParam(':pseudo', $pseudo);
     $ins->bindParam(':email', $email);
     if ($mdp) {
@@ -116,6 +130,8 @@ if ($method == 'DELETE') {
         ];
     }
 }
+// On indique qu'on renvoie un JSON
+header('Content-type: application/json');
 // On transforme l'array en JSON et on l'affiche en réponse.
 echo json_encode($response);
 ?>
