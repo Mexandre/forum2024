@@ -53,13 +53,15 @@ if ($method == 'POST') {
         $email = filter_var($data['email'], FILTER_VALIDATE_EMAIL);
         $mdp = password_hash($data['mdp'], PASSWORD_ARGON2ID, $hashOptions);
         $birth = htmlspecialchars($data['birth']);
+        $ip = $_SERVER['REMOTE_ADDR'];
         
         // Utilisation de requêtes préparées pour éviter les injections SQL
-        $ins = $cnx->prepare("INSERT INTO $table SET username = :pseudo, email= :email, password= :mdp, birth_date= :birth");
+        $ins = $cnx->prepare("INSERT INTO $table SET username = :pseudo, email= :email, password= :mdp, birth_date= :birth, registration_ip = :ip");
         $ins->bindParam(':pseudo', $pseudo);
         $ins->bindParam(':email', $email);
         $ins->bindParam(':mdp', $mdp);
         $ins->bindParam(':birth', $birth);
+        $ins->bindParam(':ip', $ip);
         $ins->execute();
 
         // Préparation de la réponse dans un tableau
