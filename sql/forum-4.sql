@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:8889
--- Généré le : lun. 11 mars 2024 à 11:08
+-- Généré le : lun. 11 mars 2024 à 11:17
 -- Version du serveur : 5.7.39
 -- Version de PHP : 8.2.0
 
@@ -348,7 +348,6 @@ ALTER TABLE `user`
 --
 ALTER TABLE `user_blocked`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `FK_BeRoomId_RoomId` (`room_id`),
   ADD KEY `FK_BeRequesterId_ParticipantUserId` (`requester_id`),
   ADD KEY `FK_BeBlockedId_ParticipantUserId` (`blocked_id`);
 
@@ -488,14 +487,6 @@ ALTER TABLE `forum_users_ban`
 --
 ALTER TABLE `user`
   ADD CONSTRAINT `FK_UsergenderId_genderId` FOREIGN KEY (`gender_id`) REFERENCES `user_gender` (`id`);
-
---
--- Contraintes pour la table `user_blocked`
---
-ALTER TABLE `user_blocked`
-  ADD CONSTRAINT `FK_BeBlockedId_ParticipantUserId` FOREIGN KEY (`blocked_id`) REFERENCES `forum_mp_msg` (`mp_id`),
-  ADD CONSTRAINT `FK_BeRequesterId_ParticipantUserId` FOREIGN KEY (`requester_id`) REFERENCES `forum_mp_msg` (`mp_id`),
-  ADD CONSTRAINT `FK_BeRoomId_RoomId` FOREIGN KEY (`room_id`) REFERENCES `message_room` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
