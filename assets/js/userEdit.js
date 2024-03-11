@@ -37,6 +37,8 @@ document.getElementById('user-edit').addEventListener('submit', async function(e
         id,
         username: document.getElementById('username').value,
         email: document.getElementById('email').value,
+        oldPassword: document.getElementById('oldPassword').value,
+        password: document.getElementById('password').value,
         lastname: document.getElementById('lastname').value,
         firstname: document.getElementById('firstname').value,
         address: document.getElementById('address').value,
@@ -57,9 +59,13 @@ document.getElementById('user-edit').addEventListener('submit', async function(e
         if (!response.ok) {
             throw new Error(`Erreur réseau avec le statut: ${response.status}`);
         }
-        const responseData = await response.json();
-        console.log(responseData);
-        
+        try {
+            const responseText = await response.text();
+            console.log(responseText);
+        } catch (error) {
+            console.error('Erreur lors de la récupération de la réponse en texte :', error);
+        }
+                
     //    alert('Profil mis à jour avec succès.');
     } catch (error) {
         console.error('Erreur lors de la mise à jour du profil:', error);

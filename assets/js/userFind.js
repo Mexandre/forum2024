@@ -73,99 +73,99 @@ function displayResults(data) {
     }
 }
 
-function displayUpdateForm(result) {
-    // Crée un formulaire
-    const form = document.createElement('form');
+// function displayUpdateForm(result) {
+//     // Crée un formulaire
+//     const form = document.createElement('form');
     
-    // Ajoute un titre h2 pour le formulaire
-    const title = document.createElement('h2');
-    title.textContent = 'Modifier l\'utilisateur';
-    form.appendChild(title);
+//     // Ajoute un titre h2 pour le formulaire
+//     const title = document.createElement('h2');
+//     title.textContent = 'Modifier l\'utilisateur';
+//     form.appendChild(title);
 
-    // Ajoute un label et un champ pour le pseudo
-    const pseudoLabel = document.createElement('label');
-    pseudoLabel.textContent = 'Pseudo:';
-    form.appendChild(pseudoLabel);
+//     // Ajoute un label et un champ pour le pseudo
+//     const pseudoLabel = document.createElement('label');
+//     pseudoLabel.textContent = 'Pseudo:';
+//     form.appendChild(pseudoLabel);
 
-    const pseudoInput = document.createElement('input');
-    pseudoInput.type = 'text';
-    pseudoInput.name = 'pseudo';
-    pseudoInput.value = result.pseudo;
-    form.appendChild(pseudoInput);
+//     const pseudoInput = document.createElement('input');
+//     pseudoInput.type = 'text';
+//     pseudoInput.name = 'pseudo';
+//     pseudoInput.value = result.pseudo;
+//     form.appendChild(pseudoInput);
 
-    // Ajoute un label et un champ pour l'email
-    const emailLabel = document.createElement('label');
-    emailLabel.textContent = 'Email:';
-    form.appendChild(emailLabel);
+//     // Ajoute un label et un champ pour l'email
+//     const emailLabel = document.createElement('label');
+//     emailLabel.textContent = 'Email:';
+//     form.appendChild(emailLabel);
 
-    const mailInput = document.createElement('input');
-    mailInput.type = 'mail';
-    mailInput.name = 'mail';
-    mailInput.value = result.mail;
-    form.appendChild(mailInput);
+//     const mailInput = document.createElement('input');
+//     mailInput.type = 'mail';
+//     mailInput.name = 'mail';
+//     mailInput.value = result.mail;
+//     form.appendChild(mailInput);
 
-    // Ajoute un label et un champ pour le mot de passe
-    const passwordLabel = document.createElement('label');
-    passwordLabel.textContent = 'Mot de passe:';
-    form.appendChild(passwordLabel);
+//     // Ajoute un label et un champ pour le mot de passe
+//     const passwordLabel = document.createElement('label');
+//     passwordLabel.textContent = 'Mot de passe:';
+//     form.appendChild(passwordLabel);
 
-    const passwordInput = document.createElement('input');
-    passwordInput.type = 'password';
-    passwordInput.name = 'mdp';
-    form.appendChild(passwordInput);
+//     const passwordInput = document.createElement('input');
+//     passwordInput.type = 'password';
+//     passwordInput.name = 'mdp';
+//     form.appendChild(passwordInput);
 
-    // Ajoute un champ caché pour l'ID
-    const idInput = document.createElement('input');
-    idInput.type = 'hidden';
-    idInput.name = 'id';
-    idInput.value = result.id;
-    form.appendChild(idInput);
+//     // Ajoute un champ caché pour l'ID
+//     const idInput = document.createElement('input');
+//     idInput.type = 'hidden';
+//     idInput.name = 'id';
+//     idInput.value = result.id;
+//     form.appendChild(idInput);
 
-    // Ajoute un bouton de soumission pour mettre à jour
-    const submitButton = document.createElement('button');
-    submitButton.type = 'submit';
-    submitButton.textContent = 'Mettre à jour';
-    form.appendChild(submitButton);
+//     // Ajoute un bouton de soumission pour mettre à jour
+//     const submitButton = document.createElement('button');
+//     submitButton.type = 'submit';
+//     submitButton.textContent = 'Mettre à jour';
+//     form.appendChild(submitButton);
 
-    // Ajoute un bouton de suppression pour supprimer l'entrée
-    const deleteButton = document.createElement('button');
-    deleteButton.type = 'button';
-    deleteButton.id = 'delete';
-    deleteButton.textContent = 'Supprimer';
-    form.appendChild(deleteButton);
+//     // Ajoute un bouton de suppression pour supprimer l'entrée
+//     const deleteButton = document.createElement('button');
+//     deleteButton.type = 'button';
+//     deleteButton.id = 'delete';
+//     deleteButton.textContent = 'Supprimer';
+//     form.appendChild(deleteButton);
 
-    // Gère la suppression de l'utilisateur
-    deleteButton.addEventListener('click', function() {
-        if (confirm("Voulez-vous vraiment supprimer cet utilisateur ?")) {
-            const userId = result.id;
-            fetch(`../api/components/ForumUsersData.php?id=${userId}`, {
-                method: 'DELETE'
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Utilisateur supprimé avec succès:', data);
-                // Vous pouvez ajouter ici un message de confirmation ou une redirection vers une autre page
-            })
-            .catch(error => {
-                console.error('Erreur lors de la suppression de l\'utilisateur:', error);
-                // Gérer les erreurs, par exemple afficher un message à l'utilisateur
-            });
-            form.style.display = 'none';
-        }
-    });
+//     // Gère la suppression de l'utilisateur
+//     deleteButton.addEventListener('click', function() {
+//         if (confirm("Voulez-vous vraiment supprimer cet utilisateur ?")) {
+//             const userId = result.id;
+//             fetch(`../api/components/ForumUsersData.php?id=${userId}`, {
+//                 method: 'DELETE'
+//             })
+//             .then(response => response.json())
+//             .then(data => {
+//                 console.log('Utilisateur supprimé avec succès:', data);
+//                 // Vous pouvez ajouter ici un message de confirmation ou une redirection vers une autre page
+//             })
+//             .catch(error => {
+//                 console.error('Erreur lors de la suppression de l\'utilisateur:', error);
+//                 // Gérer les erreurs, par exemple afficher un message à l'utilisateur
+//             });
+//             form.style.display = 'none';
+//         }
+//     });
 
-    // Gère la soumission du formulaire
-    form.addEventListener('submit', function(event) {
-        event.preventDefault();
-        updateData(new FormData(form));
-        form.style.display = 'none';
-    });
+//     // Gère la soumission du formulaire
+//     form.addEventListener('submit', function(event) {
+//         event.preventDefault();
+//         updateData(new FormData(form));
+//         form.style.display = 'none';
+//     });
 
-    // Affiche le formulaire dans la section #user
-    const userSection = document.getElementById('user');
-    userSection.innerHTML = '';
-    userSection.appendChild(form);
-}
+//     // Affiche le formulaire dans la section #user
+//     const userSection = document.getElementById('user');
+//     userSection.innerHTML = '';
+//     userSection.appendChild(form);
+// }
 function updateData(formData) {
     const jsonData = JSON.stringify(Object.fromEntries(formData.entries()));
     // Effectue une requête PATCH pour mettre à jour les données dans la base de données

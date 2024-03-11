@@ -58,13 +58,16 @@ switch ($action) { // Switch sur la variable d'action
             default:
                 require_once(INC . "forum_user_form_find.php"); // Inclusion de la page de recherche d'utilisateurs
                 break;
-                case 'edit':
-                    require_once(INC . "forum_user_form_edit.php"); // Inclusion du formulaire de modification d'utilisateur
-                    break;
-                    case 'profil':
-                        require_once(INC . "forum_user_edit.php"); // Inclusion du formulaire de modification d'utilisateur
-                        break;
-                }
+            case 'edit':
+                require_once(INC . "forum_user_form_edit.php"); 
+                break;
+            case 'profil':
+                require_once(INC . "forum_user_edit.php"); // Edition des données utilisateur
+                break;
+            case 'admin':
+                require_once(INC . "forum_user_admin.php"); // Edition des données utilisateur
+                break;
+            }
         break;
 }
 

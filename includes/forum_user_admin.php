@@ -1,12 +1,11 @@
 <section id="user">
     <form id="user-edit">
-        <h2>Gérer votre profil</h2>
+        <h2>Administration du profil</h2>
         <label for="pseudo">Pseudo</label>
         <input type="text" id="username" name="username">
         <label for="email">Email</label>
         <input type="text" id="email" name="email">
         <label for="password">Mot de passe</label>
-        <input type="text" id="oldPassword" name="oldPassword" placeholder="Ancien mot de passe">
         <input type="text" id="password" name="password" placeholder="Nouveau mot de passe">
         <label for="lastname">Nom</label>
         <input type="text" id="lastname" name="lastname" placeholder="Votre nom">
@@ -27,4 +26,4 @@
 <script>
     var id = <?= $_SESSION['id']; ?>;
 </script>
-<script src="../assets/js/userEdit.js"></script>
+<script src="../assets/js/userAdmin.js"></script>

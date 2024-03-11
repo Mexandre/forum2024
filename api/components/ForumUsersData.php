@@ -88,7 +88,6 @@ if ($method == 'PATCH') {
     // Utilisez htmlspecialchars pour sécuriser les données entrantes
     $pseudo = htmlspecialchars($data['username']);
     $email = filter_var($data['email'], FILTER_VALIDATE_EMAIL);
-    //$mdp = password_hash($data['mdp'], PASSWORD_DEFAULT);
     $id = htmlspecialchars($data['id']);
     $lastname = htmlspecialchars($data['lastname']);
     $firstname = htmlspecialchars($data['firstname']);
@@ -96,8 +95,26 @@ if ($method == 'PATCH') {
     $zipcode = htmlspecialchars($data['zipcode']);
     $city = htmlspecialchars($data['city']);
     $country = htmlspecialchars($data['country']);
-    // // Utilisez des requêtes préparées pour éviter les injections SQL
-    $ins = $cnx->prepare("UPDATE $table SET username = :username, email = :email, lastname =:lastname, firstname= :firstname, address= :address, zipcode= :zipcode, city= :city, country= :country WHERE id = :id");
+    if (isset($data['password'])) {
+        $s = $cnx->prepare("SELECT password FROM $table WHERE id = ?");
+        $s->execute([$id]);
+        $r = $s->fetch();
+        if (password_verify($data['oldPassword'], $r['password'])) {
+            $hashOptions = [
+                'memory_cost' => 1<<17, // 128MB
+                'time_cost'   => 4,
+                'threads'     => 2,
+            ];
+            $mdp = password_hash($data['password'], PASSWORD_ARGON2ID, $hashOptions);
+            $addRequest = ', password = :password';
+        }  else {
+            $addRequest = '';
+        }
+    } else {
+        $addRequest = '';
+    }
+                    // // Utilisez des requêtes préparées pour éviter les injections SQL
+    $ins = $cnx->prepare("UPDATE $table SET username = :username, email = :email, lastname =:lastname, firstname= :firstname, address= :address, zipcode= :zipcode, city= :city, country= :country $addRequest WHERE id = :id");
     $ins->bindParam(':username', $pseudo);
     $ins->bindParam(':email', $email);
     $ins->bindParam(':lastname', $lastname);
@@ -106,8 +123,8 @@ if ($method == 'PATCH') {
     $ins->bindParam(':zipcode', $zipcode);
     $ins->bindParam(':city', $city);
     $ins->bindParam(':country', $country);
-    if ($mdp) {
-        $ins->bindParam(':mdp', $mdp);
+    if (isset($mdp)) {
+        $ins->bindParam(':password', $mdp);
     }
     $ins->bindParam(':id', $id);
     $ins->execute();
