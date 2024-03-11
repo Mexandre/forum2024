@@ -24,7 +24,20 @@ if ($method == 'GET') {
         $stmt->execute(["%$query%"]);
         $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    } else {
+    } else if (isset($_GET['id'])) {
+        $stmt = $cnx->prepare("SELECT * FROM $table WHERE id=?");
+        $stmt->execute([$_GET["id"]]);
+        $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($response as $key => $value) {
+            unset($response[$key]['token']);                
+            unset($response[$key]['password']);         
+            unset($response[$key]['registration_date']);
+            unset($response[$key]['blocked']);
+            unset($response[$key]['ban_expiration_date']);
+        }     
+    }
+    
+    else {
         // Si le paramètre 'q' n'est pas présent, vous pouvez renvoyer un message d'erreur ou une réponse vide selon vos besoins.
         echo json_encode(array('error' => 'Le paramètre "q" est manquant'));
     } 
@@ -71,15 +84,26 @@ if ($method == 'POST') {
 }
 if ($method == 'PATCH') {
     // Utilisez htmlspecialchars pour sécuriser les données entrantes
-    $pseudo = htmlspecialchars($data['pseudo']);
-    $email = filter_var($data['mail'], FILTER_VALIDATE_EMAIL);
-    $mdp = password_hash($data['mdp'], PASSWORD_DEFAULT);
+    $pseudo = htmlspecialchars($data['username']);
+    $email = filter_var($data['email'], FILTER_VALIDATE_EMAIL);
+    //$mdp = password_hash($data['mdp'], PASSWORD_DEFAULT);
     $id = htmlspecialchars($data['id']);
-
-    // Utilisez des requêtes préparées pour éviter les injections SQL
-    $ins = $cnx->prepare("UPDATE $table SET pseudo = :pseudo, mail = :email" . ($mdp ? ", pass = :mdp" : "") . " WHERE id = :id");
-    $ins->bindParam(':pseudo', $pseudo);
+    $lastname = htmlspecialchars($data['lastname']);
+    $firstname = htmlspecialchars($data['firstname']);
+    $address = htmlspecialchars($data['address']);
+    $zipcode = htmlspecialchars($data['zipcode']);
+    $city = htmlspecialchars($data['city']);
+    $country = htmlspecialchars($data['country']);
+    // // Utilisez des requêtes préparées pour éviter les injections SQL
+    $ins = $cnx->prepare("UPDATE $table SET username = :username, email = :email, lastname =:lastname, firstname= :firstname, address= :address, zipcode= :zipcode, city= :city, country= :country WHERE id = :id");
+    $ins->bindParam(':username', $pseudo);
     $ins->bindParam(':email', $email);
+    $ins->bindParam(':lastname', $lastname);
+    $ins->bindParam(':firstname', $firstname);
+    $ins->bindParam(':address', $address);
+    $ins->bindParam(':zipcode', $zipcode);
+    $ins->bindParam(':city', $city);
+    $ins->bindParam(':country', $country);
     if ($mdp) {
         $ins->bindParam(':mdp', $mdp);
     }

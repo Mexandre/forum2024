@@ -43,7 +43,7 @@ function displayResults(data) {
             // Crée un lien pour le nom du résultat
             const nameLink = document.createElement('a');
             nameLink.href = '#'; // Définissez ici l'URL souhaitée ou utilisez un attribut de données pour stocker l'ID
-            nameLink.textContent = result.pseudo; // Supposons que le résultat ait une propriété 'pseudo'
+            nameLink.textContent = result.username; // Supposons que le résultat ait une propriété 'pseudo'
             // Écouteur d'événements pour afficher le formulaire de modification lors du clic sur le nom
             nameLink.addEventListener('click', function(event) {
                 event.preventDefault(); // Empêche le comportement de lien par défaut

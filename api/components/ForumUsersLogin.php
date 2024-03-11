@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (isset($data['remember'])) {
                 $token = password_hash(random_bytes(32), PASSWORD_DEFAULT); // Génération d'un jeton aléatoire pour se souvenir de l'utilisateur
 
-                $ins = $cnx->prepare("UPDATE utilisateur SET jeton = ? WHERE id = ?"); // Préparation de la requête SQL pour mettre à jour le jeton dans la base de données
+                $ins = $cnx->prepare("UPDATE user SET token = ? WHERE id = ?"); // Préparation de la requête SQL pour mettre à jour le jeton dans la base de données
                 $ins->execute([$token, $_SESSION['id']]); // Exécution de la requête de mise à jour du jeton
 
                 // Création d'un cookie avec le jeton et définition de sa durée de validité (par exemple, un mois)

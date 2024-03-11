@@ -4,7 +4,7 @@ session_start(); // Démarrage de la session
 if (!isset($_SESSION['id']) && isset($_COOKIE['forum_user_token'])) { // Si l'utilisateur n'est pas connecté mais qu'un cookie contenant le jeton est présent
     require_once('../api/config/bdd.php'); // Inclusion du fichier de configuration de la base de données
 
-    $s = $cnx->prepare("SELECT * FROM utilisateur WHERE jeton = ?"); // Préparation de la requête SQL pour récupérer l'utilisateur par jeton
+    $s = $cnx->prepare("SELECT * FROM user WHERE token = ?"); // Préparation de la requête SQL pour récupérer l'utilisateur par jeton
     $s->execute([$_COOKIE['forum_user_token']]); // Exécute la requête avec le jeton stocké dans le cookie
     $r = $s->fetch(); // Récupère la première ligne de résultat
 
@@ -61,7 +61,10 @@ switch ($action) { // Switch sur la variable d'action
                 case 'edit':
                     require_once(INC . "forum_user_form_edit.php"); // Inclusion du formulaire de modification d'utilisateur
                     break;
-            }
+                    case 'profil':
+                        require_once(INC . "forum_user_edit.php"); // Inclusion du formulaire de modification d'utilisateur
+                        break;
+                }
         break;
 }
 
