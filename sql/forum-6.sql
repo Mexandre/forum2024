@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:8889
--- Généré le : lun. 11 mars 2024 à 12:47
+-- Généré le : lun. 11 mars 2024 à 12:52
 -- Version du serveur : 5.7.39
 -- Version de PHP : 8.2.0
 
@@ -30,6 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `forum_mp_msg` (
   `id` int(11) NOT NULL,
   `mp_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `sender_id` int(11) NOT NULL,
   `sender_ip` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
   `date_posted` datetime NOT NULL,
@@ -47,7 +48,6 @@ CREATE TABLE `forum_mp_msg` (
 
 CREATE TABLE `forum_mp_subject` (
   `id` int(11) NOT NULL,
-  `room_id` int(11) NOT NULL,
   `msg` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `owner_id` int(11) NOT NULL,
   `owner_ip` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
