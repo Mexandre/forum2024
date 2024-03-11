@@ -1,8 +1,5 @@
 document.addEventListener('DOMContentLoaded', async function() {
     try {
-        // Étape 1: Extraire l'ID de l'URL
-        const params = new URLSearchParams(window.location.search);
-        const id = params.get('id');
 
         if (id) {
             // Étape 2: Envoyer une requête asynchrone pour récupérer les données de l'utilisateur

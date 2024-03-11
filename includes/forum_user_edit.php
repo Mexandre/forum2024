@@ -17,8 +17,11 @@
         <input type="text" id="city" name="city" >
         <label for="city">Pays</label>
         <input type="text" id="country" name="country" >
-        <input type="hidden" name="id" value="<?= $_GET['id'];?>">
+        <input type="hidden" name="id" value="<?= $_SESSION['id'];?>">
         <button>Enregistré</button>
     </form>
 </section>
+<script>
+    var id = <?= $_SESSION['id']; ?>;
+</script>
 <script src="../assets/js/userEdit.js"></script>

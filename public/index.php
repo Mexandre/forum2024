@@ -10,8 +10,8 @@ if (!isset($_SESSION['id']) && isset($_COOKIE['forum_user_token'])) { // Si l'ut
 
     if ($r && is_array($r) && isset($r['id'])) { // Vérifie si un utilisateur correspondant au jeton existe
         $_SESSION['id'] = $r['id']; // Stocke l'ID de l'utilisateur dans la session
-        $_SESSION['pseudo'] = $r['pseudo']; // Stocke le pseudo de l'utilisateur dans la session
-        $_SESSION['email'] = $r['mail']; // Stocke l'adresse e-mail de l'utilisateur dans la session
+        $_SESSION['pseudo'] = $r['username']; // Stocke le pseudo de l'utilisateur dans la session
+        $_SESSION['email'] = $r['email']; // Stocke l'adresse e-mail de l'utilisateur dans la session
     }
 }
 
