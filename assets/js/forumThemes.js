@@ -31,6 +31,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         const sujetElement = document.createElement('a');
                         sujetElement.href = '#';
                         sujetElement.textContent = `${sujet.titre} - ${sujet.nb_posts} posts`;
+                        // Ajoutez la classe "sujet-link" au lien
+                        sujetElement.classList.add('sujet-link');
+                        sujetElement.dataset.sujetId = sujet.id; // Ajouter l'ID du sujet comme attribut
                         sujetsContainer.appendChild(sujetElement);
                     });
                 } else {
@@ -38,6 +41,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 // Masquer le conteneur des thèmes lors de l'affichage des sujets
                 container.style.display = 'none';
+
+                // Ajouter les écouteurs d'événements pour les liens de sujet
+                const sujetLinks = document.querySelectorAll('.sujet-link');
+                sujetLinks.forEach(link => {
+                    link.addEventListener('click', function(event) {
+                        // Empêcher le comportement par défaut du lien
+                        event.preventDefault();
+                        
+                        // Récupérer l'ID du sujet à partir de l'attribut data-sujet-id
+                        const sujetId = link.dataset.sujetId;
+                        
+                        // Rediriger l'utilisateur vers la nouvelle page avec l'ID du sujet en tant que paramètre d'URL
+                        window.location.href = `../includes/forum_posts.php?sujet_id=${sujetId}`;
+                    });
+                });
             })
             .catch(error => console.error('Erreur lors de la récupération des sujets:', error));
     
