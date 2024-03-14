@@ -74,7 +74,55 @@ body {
         transform: translate(-50%, -50%);
       }
     }  
-      .form-check{
+    #user-edit {
+        @include flexbox(space-between, flex-start, row, wrap);
+        max-width:800px;
+        h2 {
+            width:100%;
+        }
+        fieldset {
+            max-width:48%;
+            border-radius:1rem;
+            border:1px solid #ccc;
+            legend {
+                padding:5px 1rem;
+                border-radius:2rem;
+                border:1px solid #ccc;
+                text-align: center;;
+            }
+        }
+        label {
+        }
+        input {
+            &[type="text"] {
+                margin-bottom:1rem;
+            }
+            &[type="checkbox"] {
+                appearance: none;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                border: 2px solid #999;
+                outline: none;
+                cursor: pointer;
+                position: relative;
+                &:checked {
+                    &::before {
+                        content: "\2022"; /* Utilisation d'un point Unicode pour représenter la coche */
+                        font-size: 1.2em;
+                        color: #999;
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                    }
+                }
+            }
+        }
+    }  
+    .form-check{
         --border:#d1d5db;
         --cursor:#89909e;
         --checked:#1771e6;
@@ -139,7 +187,7 @@ body {
     max-width:900px; 
     margin:auto;       
     @include flexbox(space-around, flex-start);
-      form {
+    form {
         @include flexbox(flex-start, flex-start, column);
         text-align: left;
         font-size:1.3rem;
@@ -175,6 +223,7 @@ body {
                 background: rgba($green, .2);
             }
         }
+
         button {
             font-size:1.3rem;
             padding:5px 1rem;

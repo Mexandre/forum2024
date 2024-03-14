@@ -32,8 +32,6 @@ if ($method == 'GET') {
             unset($response[$key]['token']);                
             unset($response[$key]['password']);         
             unset($response[$key]['registration_date']);
-            unset($response[$key]['blocked']);
-            unset($response[$key]['ban_expiration_date']);
         }     
     }
     
@@ -135,9 +133,58 @@ if ($method == 'PATCH') {
         'msg' => 'Données mises à jour avec succès'
     ];
 }
+if ($method == 'PUT') {
+    // Utilisez htmlspecialchars pour sécuriser les données entrantes
+    $pseudo = htmlspecialchars($data['username']);
+    $email = filter_var($data['email'], FILTER_VALIDATE_EMAIL);
+    $id = htmlspecialchars($data['id']);
+    $lastname = htmlspecialchars($data['lastname']);
+    $firstname = htmlspecialchars($data['firstname']);
+    $address = htmlspecialchars($data['address']);
+    $zipcode = htmlspecialchars($data['zipcode']);
+    $city = htmlspecialchars($data['city']);
+    $country = htmlspecialchars($data['country']);
+    $blocked = $data['blocked'] == true ? 1 : 0;
+    $emailBlocked = $data['email_blocked'] == true ? 1 : 0;
+    if (isset($data['password'])) {
+        $hashOptions = [
+            'memory_cost' => 1<<17, // 128MB
+            'time_cost'   => 4,
+            'threads'     => 2,
+        ];
+        $mdp = password_hash($data['password'], PASSWORD_ARGON2ID, $hashOptions);
+        $addRequest = ', password = :password';
+    } else {
+        $addRequest = '';
+    }
+                    // // Utilisez des requêtes préparées pour éviter les injections SQL
+    $ins = $cnx->prepare("UPDATE $table SET username = :username, email = :email, lastname =:lastname, firstname= :firstname, address= :address, zipcode= :zipcode, city= :city, country= :country $addRequest ,  blocked = :blocked, email_blocked = :email_blocked WHERE id = :id");
+    $ins->bindParam(':username', $pseudo);
+    $ins->bindParam(':email', $email);
+    $ins->bindParam(':lastname', $lastname);
+    $ins->bindParam(':firstname', $firstname);
+    $ins->bindParam(':address', $address);
+    $ins->bindParam(':zipcode', $zipcode);
+    $ins->bindParam(':city', $city);
+    $ins->bindParam(':country', $country);
+    if (isset($mdp)) {
+        $ins->bindParam(':password', $mdp);
+    }
+    $ins->bindParam(':blocked', $blocked);
+    $ins->bindParam(':email_blocked', $emailBlocked);
+    $ins->bindParam(':id', $id);
+    $ins->execute();
+
+    // Préparer la réponse dans un tableau
+    $response = [
+        'success' => true,
+        'msg' => 'Données mises à jour avec succès'
+    ];
+}
 if ($method == 'DELETE') {
+    $id = htmlspecialchars($data['id']);
     // Vérifiez s'il y a un ID utilisateur dans la requête
-    if (!isset($_GET['id']) || empty($_GET['id'])) {
+    if (!isset($id) || empty($id)) {
         // Si l'ID est manquant, renvoyer une erreur
         $response = [
             'success' => false,
@@ -145,10 +192,10 @@ if ($method == 'DELETE') {
         ];
     } else {
         // Récupérez l'ID de l'utilisateur depuis la requête
-        $userId = htmlspecialchars($_GET['id']);
+        $userId = htmlspecialchars($data['id']);
 
         // Préparez et exécutez la requête de suppression dans la base de données
-        $stmt = $cnx->prepare("DELETE FROM utilisateur WHERE id = :id");
+        $stmt = $cnx->prepare("DELETE FROM $table WHERE id = :id");
         $stmt->bindParam(':id', $userId);
         $stmt->execute();
 

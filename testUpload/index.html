@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload de fichiers multiples avec Drag and Drop</title>
+    <style>
+        #drop-zone {
+            border: 1px solid white;
+            box-shadow: 0 0 2rem #ddd inset, 0 0 3px #555;
+            border-radius: 5px;
+            padding: 50px;
+            text-align: center;
+            color: #aaa;
+            transition: all .5s;
+            max-width: 300px;
+            margin: auto;
+            font-family: sans-serif;
+            cursor: progress;
+        }
+        #drop-zone:hover {
+            box-shadow: 0 0 1rem #ddd inset, 0 5px 10px #aaa;
+        }
+        #file-names {
+            font-family: 'Courier New', Courier, monospace;
+            width: 400px;
+            margin: 5px auto;
+            padding: 5px;
+        }
+        #file-names div {
+            border: 1px solid #ccc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding:0 0 0 5px;
+            margin: 1px 0;
+        }
+        #file-names div span {
+            font-size:26px;
+            padding:5px;
+            background: red;
+            color:white;
+            cursor:pointer;
+            width:40px;
+            text-align: center;
+            display:inline-block;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div id="drop-zone">Déposez vos fichiers ici</div>
+<div id="file-names"></div>
+<input type="file" id="file_input" multiple class="hidden"/>
+<script src="script.js"></script>
+
+</body>
+</html>

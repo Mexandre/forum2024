@@ -1,5 +1,69 @@
 @charset "UTF-8";
 @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Quicksand:wght@300..700&display=swap");
+.toggler-wrapper {
+  display: block;
+  width: 45px;
+  height: 25px;
+  cursor: pointer;
+  position: relative;
+}
+.toggler-wrapper input[type=checkbox] {
+  display: none;
+}
+.toggler-wrapper input[type=checkbox]:checked + .toggler-slider {
+  background-color: rgb(158, 0, 49);
+}
+.toggler-wrapper input[type=checkbox]:checked + .toggler-slider .toggler-knob {
+  left: calc(100% - 19px - 3px);
+}
+.toggler-wrapper .toggler-slider {
+  background-color: #ccc;
+  position: absolute;
+  border-radius: 100px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: all 300ms ease;
+  width: 55px;
+}
+.toggler-wrapper .toggler-slider:after {
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 5px);
+  transform: translateY(-50%);
+  font-size: 75%;
+  text-transform: uppercase;
+  font-weight: 500;
+  opacity: 0.7;
+  min-width: 150px;
+}
+.toggler-wrapper .toggler-knob {
+  position: absolute;
+  transition: all 300ms ease;
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  left: 3px;
+  top: 3px;
+  background-color: #fff;
+}
+.toggler-wrapper.banned input[type=checkbox]:checked + .toggler-slider:after {
+  content: "Banni";
+  width: 150px;
+}
+.toggler-wrapper.banned .toggler-slider:after {
+  content: "Pas banni";
+}
+.toggler-wrapper.email-blocked input[type=checkbox]:checked + .toggler-slider:after {
+  content: "Email bloqué";
+  width: 150px;
+}
+.toggler-wrapper.email-blocked .toggler-slider:after {
+  content: "Email ok";
+  width: 170px;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -81,6 +145,52 @@ body {
   position: relative;
 }
 #user #user-create input[type=checkbox]:checked::before {
+  content: "•"; /* Utilisation d'un point Unicode pour représenter la coche */
+  font-size: 1.2em;
+  color: #999;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+#user #user-edit {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-direction: row;
+  flex-wrap: wrap;
+  max-width: 800px;
+}
+#user #user-edit h2 {
+  width: 100%;
+}
+#user #user-edit fieldset {
+  max-width: 48%;
+  border-radius: 1rem;
+  border: 1px solid #ccc;
+}
+#user #user-edit fieldset legend {
+  padding: 5px 1rem;
+  border-radius: 2rem;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+#user #user-edit input[type=text] {
+  margin-bottom: 1rem;
+}
+#user #user-edit input[type=checkbox] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #999;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+}
+#user #user-edit input[type=checkbox]:checked::before {
   content: "•"; /* Utilisation d'un point Unicode pour représenter la coche */
   font-size: 1.2em;
   color: #999;
