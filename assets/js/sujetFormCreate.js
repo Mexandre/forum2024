@@ -8,9 +8,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const createSubjectForm = document.createElement('form');
     createSubjectForm.id = 'createSubjectForm';
     createSubjectForm.innerHTML = `
-        <input type="hidden" id="id_theme" name="id_theme">
-        <label for="titre">Titre</label>
-        <input type="text" id="titre" name="titre">
+        <input type="hidden" id="id_theme" name="id_theme"> <!-- Champ caché pour l'ID du thème -->
+        <label for="titre">Titre :</label>
+        <input type="text" id="titre" name="titre"><br>
+        <label for="contenu">Contenu :</label><br>
+        <textarea id="contenu" name="contenu" rows="4" cols="50"></textarea><br>
         <input type="submit" value="Créer le sujet">
     `;
 

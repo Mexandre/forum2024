@@ -7,7 +7,7 @@ try {
         $themeId = $_GET['theme_id'];
 
         // Requête pour récupérer les sujets du thème spécifié
-        $requete = "SELECT * FROM forum_sujet WHERE id_theme = :theme_id";
+        $requete = "SELECT * FROM forum_topic WHERE theme_id = :theme_id";
         $resultat = $cnx->prepare($requete);    
         $resultat->bindParam(':theme_id', $themeId);
         $resultat->execute();

@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     data.forEach(sujet => {
                         const sujetElement = document.createElement('a');
                         sujetElement.href = '#';
-                        sujetElement.textContent = `${sujet.titre} - ${sujet.nb_posts} posts`;
+                        sujetElement.textContent = `${sujet.title} - ${sujet.num_replies} posts`;
                         // Ajoutez la classe "sujet-link" au lien
                         sujetElement.classList.add('sujet-link');
                         sujetElement.dataset.sujetId = sujet.id; // Ajouter l'ID du sujet comme attribut
