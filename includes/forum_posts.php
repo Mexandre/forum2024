@@ -9,9 +9,9 @@ if(isset($_GET['sujet_id'])) {
 
     try {
         // Préparer la requête SQL pour récupérer les posts associés au sujet
-        $query = "SELECT p.*, u.pseudo AS auteur FROM forum_post p 
-        LEFT JOIN utilisateur u ON p.id_utilisateur = u.id
-        WHERE p.id_sujet = :id_sujet";
+        $query = "SELECT p.*, u.username AS auteur FROM forum_topic p 
+        LEFT JOIN user u ON p.user_id = u.id
+        WHERE p.id = :id_sujet";
         $stmt = $cnx->prepare($query);
         $stmt->bindParam(':id_sujet', $_GET['sujet_id']);
 

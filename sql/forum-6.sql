@@ -129,21 +129,21 @@ INSERT INTO `forum_theme` (`id`, `nom`, `theme_position`, `theme_img_url`) VALUE
 -- Structure de la table `forum_topic`
 --
 
-CREATE TABLE `forum_topic` (
+CREATE TABLE forum_topic (
   `id` int(11) NOT NULL,
   `title` varchar(180) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `user_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL DEFAULT '0',
   `user_ip` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `theme_id` int(11) NOT NULL,
+  `theme_id` int(11) NOT NULL DEFAULT '0',
   `poll_id` int(11) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT NULL,
-  `first_post_id` int(11) NOT NULL,
-  `first_post_date` datetime NOT NULL,
-  `last_post_id` int(11) NOT NULL,
-  `last_post_date` datetime NOT NULL,
-  `num_views` int(11) NOT NULL,
-  `num_replies` int(11) NOT NULL
+  `first_post_id` int(11) NOT NULL DEFAULT '0',
+  `first_post_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_post_id` int(11) NOT NULL DEFAULT '0',
+  `last_post_date` datetime DEFAULT NULL,
+  `num_views` int(11) NOT NULL DEFAULT '0',
+  `num_replies` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------

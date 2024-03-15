@@ -102,38 +102,4 @@ document.addEventListener('DOMContentLoaded', function() {
                 container.appendChild(link);
             });
         });
-
-    const formContainer = document.createElement('div'); // Créez un conteneur pour le formulaire
-    formContainer.id = 'createSubjectFormContainer'; // Donnez un ID au conteneur
-    formContainer.style.display = 'none'; // Cachez le conteneur par défaut
-
-    // Créez le formulaire de création de sujet
-    const createSubjectForm = document.createElement('form');
-    createSubjectForm.id = 'createSubjectForm';
-    createSubjectForm.innerHTML = `
-        <label for="titre">Titre</label>
-        <input type="hidden" id="id_theme" name="id_theme" value="${selectedThemeId}">
-        <input type="text" id="titre" name="titre">
-        <input type="submit" value="Créer le sujet">
-    `;
-
-    formContainer.appendChild(createSubjectForm); // Ajoutez le formulaire au conteneur
-
-    // Ajoutez le conteneur du formulaire à la page
-    document.body.appendChild(formContainer);
-
-    createSubjectForm.addEventListener('submit', function(event) {
-        event.preventDefault(); // Empêche le rechargement de la page
-
-        // Récupérez les données du formulaire et envoyez-les au serveur
-        // Vous devrez implémenter cette partie pour gérer l'envoi des données au serveur
-        const formData = new FormData(createSubjectForm);
-        const titre = formData.get('titre');
-        const id_theme = selectedThemeId; // Utilisez l'ID du thème sélectionné
-
-        // Affichez un message de succès ou d'erreur après l'envoi des données au serveur
-        console.log('Titre du sujet :', titre);
-        console.log('ID du thème :', id_theme);
-        // Vous pouvez maintenant utiliser "titre" et "id_theme" pour envoyer les données au serveur
-    });
 });
