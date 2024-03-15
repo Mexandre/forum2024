@@ -52,6 +52,12 @@ switch ($action) { // Switch sur la variable d'action
     case 'topics': 
         require_once(INC . "forum_themes.php");
         break;
+    case 'admin':
+        require_once(INC . "forum_user_admin.php"); // Edition des données utilisateur
+        break;
+    case 'mp':
+        require_once(INC . "forum_mp.php"); // Edition des données utilisateur
+        break;
     case 'users':
         // page utilisateur
         switch ($type) { // Switch sur le type
@@ -64,9 +70,7 @@ switch ($action) { // Switch sur la variable d'action
             case 'profil':
                 require_once(INC . "forum_user_edit.php"); // Edition des données utilisateur
                 break;
-            case 'admin':
-                require_once(INC . "forum_user_admin.php"); // Edition des données utilisateur
-                break;
+            
             }
         break;
 }

@@ -5,14 +5,16 @@
 <form id="mpForum">
     <label for="destinataire">Destinataire:</label>
     <input name="destinataire" type="text" id="destinataire">
+    <input type="hidden" name="userId" value="<?= $_GET['id'];?>">
     <ul id="search-destinataire" ></ul>
+
     <label  for="sujetmp">Sujet:</label>
     <input name="sujetmp" type="text" id="sujetmp">
 
     <label for="message">Message:</label>
     <textarea name="message" id="message"></textarea>
 
-    <button id="envoyerBtn" type="submit">Envoyer</button>
+    <button id="envoyerBtn">Envoyer</button>
     <button id="fermerBtn">Fermer</button>
 </form>
 <script src="../assets/js/forumMp.js" defer></script>
