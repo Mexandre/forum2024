@@ -4,14 +4,14 @@ session_start(); // Démarrage de la session
 if (!isset($_SESSION['id']) && isset($_COOKIE['forum_user_token'])) { // Si l'utilisateur n'est pas connecté mais qu'un cookie contenant le jeton est présent
     require_once('../api/config/bdd.php'); // Inclusion du fichier de configuration de la base de données
 
-    $s = $cnx->prepare("SELECT * FROM utilisateur WHERE jeton = ?"); // Préparation de la requête SQL pour récupérer l'utilisateur par jeton
+    $s = $cnx->prepare("SELECT * FROM user WHERE token = ?"); // Préparation de la requête SQL pour récupérer l'utilisateur par jeton
     $s->execute([$_COOKIE['forum_user_token']]); // Exécute la requête avec le jeton stocké dans le cookie
     $r = $s->fetch(); // Récupère la première ligne de résultat
 
     if ($r && is_array($r) && isset($r['id'])) { // Vérifie si un utilisateur correspondant au jeton existe
         $_SESSION['id'] = $r['id']; // Stocke l'ID de l'utilisateur dans la session
-        $_SESSION['pseudo'] = $r['pseudo']; // Stocke le pseudo de l'utilisateur dans la session
-        $_SESSION['email'] = $r['mail']; // Stocke l'adresse e-mail de l'utilisateur dans la session
+        $_SESSION['pseudo'] = $r['username']; // Stocke le pseudo de l'utilisateur dans la session
+        $_SESSION['email'] = $r['email']; // Stocke l'adresse e-mail de l'utilisateur dans la session
     }
 }
 
@@ -58,9 +58,15 @@ switch ($action) { // Switch sur la variable d'action
             default:
                 require_once(INC . "forum_user_form_find.php"); // Inclusion de la page de recherche d'utilisateurs
                 break;
-                case 'edit':
-                    require_once(INC . "forum_user_form_edit.php"); // Inclusion du formulaire de modification d'utilisateur
-                    break;
+            case 'edit':
+                require_once(INC . "forum_user_form_edit.php"); 
+                break;
+            case 'profil':
+                require_once(INC . "forum_user_edit.php"); // Edition des données utilisateur
+                break;
+            case 'admin':
+                require_once(INC . "forum_user_admin.php"); // Edition des données utilisateur
+                break;
             }
         break;
 }

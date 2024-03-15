@@ -7,7 +7,7 @@ if(!isset($_GET['type'])) {
             <label for="pseudo">Pseudo</label><input type="text" name="pseudo" id="pseudo">
             <label for="email">Email</label><input type="text" name="email" id="email">
             <label for="mdp">Mot de passe</label><input type="text" name="mdp" id="mdp">
-            <label for="birth">Date de naissance</label><input type="datetime-local" name="birth" id="birth">
+            <label for="birth">Date de naissance</label><input type="date" name="birth" id="birth">
             <button>Créer l'utilisateur</button>
         </form>
     </section>
