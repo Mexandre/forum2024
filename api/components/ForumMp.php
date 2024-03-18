@@ -1,67 +1,63 @@
 <?php
-// Démarrer la session si ce n'est pas déjà fait
-session_start();
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header('Content-type: application/json'); 
 
-// Vérifier si la variable de session pour sender_id est définie
-if (!isset($_SESSION['user_id'])) {
-    echo "Erreur : Identifiant d'utilisateur non défini dans la session.";
-    exit();
-}
-
-// Récupération des données du formulaire
-$destinataire = $_POST['destinataire'];
-$sujet = $_POST['sujetmp']; // Nom du salon
-$message = $_POST['message'];
-
-// Récupération du sender_id à partir de la session
-$sender_id = $_SESSION['user_id'];
-
-// Connexion à la base de données (supposons que la connexion est déjà établie)
 require_once('../config/bdd.php');
 
-// Récupération de l'ID du destinataire
-$sql_destinataire = "SELECT id FROM user WHERE username = '$destinataire'";
-$result_destinataire = $conn->query($sql_destinataire);
+session_start();
 
-if ($result_destinataire->num_rows > 0) {
-    $row = $result_destinataire->fetch_assoc();
-    $destinataire_id = $row["id"];
-} else {
-    echo "Destinataire non trouvé dans la base de données.";
-    exit();
-}
+$response = ['success' => false, 'msg' => 'Une erreur inattendue s\'est produite'];
+$method = $_SERVER['REQUEST_METHOD'];
 
-// Vérifier si le salon existe déjà
-$sql_salon = "SELECT id FROM message_room WHERE name = '$sujet'";
-$result_salon = $conn->query($sql_salon);
+$data = json_decode(file_get_contents('php://input'), true);
 
-if ($result_salon->num_rows == 0) {
-    // Si le salon n'existe pas, l'insérer dans la base de données
-    $sql_insert_salon = "INSERT INTO message_room (name, creator_id) VALUES ('$sujet', $sender_id)";
-    if ($conn->query($sql_insert_salon) === FALSE) {
-        echo "Erreur lors de l'insertion du salon: " . $conn->error;
-        exit();
+if ($method == 'POST') {
+    try {
+        // Insérer les données dans la base de données
+        $sql = "INSERT INTO forum_mp_subject (msg, owner_id, owner_ip) VALUES (:msg, :owner_id, :owner_ip)";
+        $stmt = $cnx->prepare($sql);
+        $stmt->bindParam(':msg', $data['sujetmp']);
+        $stmt->bindValue(':owner_id', $_SESSION['id']); // Utilisez l'ID de l'utilisateur connecté
+        $stmt->bindValue(':owner_ip', $_SERVER['REMOTE_ADDR']); // Utilisez l'adresse IP de l'utilisateur
+        $stmt->execute();
+
+        // Récupérer l'ID du sujet inséré
+        $subjectId = $cnx->lastInsertId();
+
+        // Insérer le message dans la table forum_mp_msg
+        $sql = "INSERT INTO forum_mp_msg (mp_id, user_id, sender_id, sender_ip, date_posted, msg, receiver_id) 
+                VALUES (:mp_id, :user_id, :sender_id, :sender_ip, NOW(), :msg, :receiver_id)";
+        $stmt = $cnx->prepare($sql);
+        $stmt->bindParam(':mp_id', $subjectId);
+        $stmt->bindValue(':sender_id', $_SESSION['id']); // Utilisez l'ID de l'utilisateur connecté comme envoyeur
+        $stmt->bindValue(':sender_ip', $_SERVER['REMOTE_ADDR']); // Utilisez l'adresse IP de l'utilisateur
+        $stmt->bindParam(':msg', $data['message']);
+        $stmt->bindValue(':receiver_id', $data['userId']); // Vous devrez récupérer l'ID du destinataire selon votre logique
+        
+        $stmt->bindValue(':user_id', $_SESSION['id']); // Utilisez l'ID de l'utilisateur connecté
+        $stmt->execute();
+        
+        $stmt->bindValue(':user_id', $data['userId']); // Utilisez l'ID de l'utilisateur connecté
+        $stmt->execute();
+
+
+        // Répondre avec un message de succès
+        $response = [
+            'success' => true,
+            'msg' => 'Message créé avec succès'
+        ];
+    } catch (Exception $e) {
+        // En cas d'erreur, répondre avec un message d'erreur
+        $response = [
+            'success' => false,
+            'msg' => 'Erreur lors du traitement : ' . $e->getMessage()
+        ];
     }
+
+    // Renvoyer la réponse au format JSON
+    header('Content-Type: application/json');
+    echo json_encode($response);
 }
-
-// Récupérer l'ID du salon (nouvellement inséré ou déjà existant)
-$sql_get_salon_id = "SELECT id FROM message_room WHERE name = '$sujet'";
-$result_salon_id = $conn->query($sql_get_salon_id);
-
-if ($result_salon_id->num_rows > 0) {
-    $row = $result_salon_id->fetch_assoc();
-    $salon_id = $row["id"];
-} else {
-    echo "Erreur lors de la récupération de l'ID du salon.";
-    exit();
-}
-
-// Insérer le message dans la table des échanges de messages
-$sql_message = "INSERT INTO message_exchange (room_id, msg, sender_id, receiver_id) VALUES ($salon_id, '$message', $sender_id, $destinataire_id)";
-if ($conn->query($sql_message) === FALSE) {
-    echo "Erreur lors de l'insertion du message: " . $conn->error;
-    exit();
-}
-
-echo "Message envoyé avec succès.";
 ?>

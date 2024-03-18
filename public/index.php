@@ -46,6 +46,9 @@ switch ($action) { // Switch sur la variable d'action
     case 'logout':
         require_once(API . "ForumUsersLogout.php"); // Inclusion du formulaire de connexion au forum
         break;
+    case 'mp':
+        require_once(INC . "forum_mp.php");
+    break;
     case 'newUsers':
         require_once(INC . "forum_user_form_create.php"); // Inclusion du formulaire d'inscription de nouveaux utilisateurs
         break;

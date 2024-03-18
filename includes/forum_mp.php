@@ -1,3 +1,10 @@
+<?php
+if(isset($_GET['id'])) {
+    $desId = $_GET['id'];
+} else {
+    $desId = 0;
+}
+?>
 <h1>Boîte de message</h1>
 
 <button id="nouveauMessageBtn">Nouveau Message</button>
@@ -5,14 +12,16 @@
 <form id="mpForum">
     <label for="destinataire">Destinataire:</label>
     <input name="destinataire" type="text" id="destinataire">
+    <input type="hidden" name="userId" value="<?= $desId;?>">
     <ul id="search-destinataire" ></ul>
+
     <label  for="sujetmp">Sujet:</label>
     <input name="sujetmp" type="text" id="sujetmp">
 
     <label for="message">Message:</label>
     <textarea name="message" id="message"></textarea>
 
-    <button id="envoyerBtn" type="submit">Envoyer</button>
+    <button id="envoyerBtn">Envoyer</button>
     <button id="fermerBtn">Fermer</button>
 </form>
 <script src="../assets/js/forumMp.js" defer></script>
