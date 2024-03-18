@@ -2,6 +2,7 @@
 <?php
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
+
 // Vérifier si l'ID du sujet est présent dans la requête GET
 if(isset($_GET['sujet_id'])) {
     // Inclure le fichier de configuration de la base de données
@@ -9,11 +10,12 @@ if(isset($_GET['sujet_id'])) {
 
     try {
         // Préparer la requête SQL pour récupérer les posts associés au sujet
-        $query = "SELECT p.*, u.username AS auteur FROM forum_topic p 
-        LEFT JOIN user u ON p.user_id = u.id
-        WHERE p.id = :id_sujet";
+        $query = "SELECT p.*, u.username AS auteur 
+                  FROM forum_post p 
+                  LEFT JOIN user u ON p.user_id = u.id
+                  WHERE p.topic_id = :sujet_id";
         $stmt = $cnx->prepare($query);
-        $stmt->bindParam(':id_sujet', $_GET['sujet_id']);
+        $stmt->bindParam(':sujet_id', $_GET['sujet_id']);
 
         // Exécuter la requête
         $stmt->execute();
@@ -37,6 +39,7 @@ if(isset($_GET['sujet_id'])) {
     echo "ID du sujet non spécifié.";
 }
 ?>
+
 
 <h2>Créer un nouveau post</h2>
 <form action="create_post.php" method="POST">
