@@ -4,7 +4,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 session_start(); // Démarrer la session s'il n'est pas déjà démarré
-
+require_once('../config/bdd.php');
 // Vérifie si la méthode de la requête est POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Récupération des données JSON de la requête
@@ -56,12 +56,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id_sujet = $cnx->lastInsertId();
 
         // Récupération des données du formulaire pour le premier message
-        $message = htmlspecialchars($data['contenu']); // Contenu du message
+        $message = strip_tags($data['contenu']); // Contenu du message
 
         // Requête d'insertion dans forum_post
         $ins_post = $cnx->prepare("INSERT INTO forum_post (topic_id, msg, user_id, user_ip, created_at, updated_at, edited_by_id) VALUES (:topic_id, :msg, :user_id, :user_ip, :created_at, :updated_at, :edited_by_id)");
         $ins_post->bindParam(':topic_id', $id_sujet); // Utilise l'ID du sujet nouvellement créé
-        $ins_post->bindParam(':msg', $contenue);
+        $ins_post->bindParam(':msg', $message);
         $ins_post->bindParam(':user_id', $id_utilisateur); // Utilise l'ID de l'utilisateur à partir de la session
         $ins_post->bindParam(':user_ip', $user_ip);
         $ins_post->bindParam(':created_at', $now);
