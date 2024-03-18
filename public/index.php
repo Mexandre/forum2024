@@ -40,12 +40,15 @@ switch ($action) { // Switch sur la variable d'action
     default:
         // Page par défaut
         break;
+    case 'admin':
+        require_once(INC . "forum_admin.php"); // Inclusion du formulaire de connexion au forum
+        break;
     case 'login':
         require_once(INC . "forum_user_form_login.php"); // Inclusion du formulaire de connexion au forum
         break;
     case 'logout':
         require_once(API . "ForumUsersLogout.php"); // Inclusion du formulaire de connexion au forum
-        break;
+    break;
     case 'mp':
         require_once(INC . "forum_mp.php");
     break;
