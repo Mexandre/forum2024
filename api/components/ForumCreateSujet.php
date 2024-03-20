@@ -83,10 +83,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Afficher les détails de l'erreur
             var_dump($ins_post->errorInfo());
         }
-
+        $last_post = $cnx->lastInsertId();
         // Mise à jour du champ first_post_id dans forum_topic
         $update_topic = $cnx->prepare("UPDATE forum_topic SET first_post_id = :first_post_id WHERE id = :id_sujet");
-        $update_topic->bindParam(':first_post_id', $ins_post->lastInsertId());
+        $update_topic->bindParam(':first_post_id', $last_post);
         $update_topic->bindParam(':id_sujet', $id_sujet);
 
         // Exécution de la requête

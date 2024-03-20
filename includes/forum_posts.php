@@ -42,7 +42,7 @@ if(isset($_GET['sujet_id'])) {
 
 
 <h2>Créer un nouveau post</h2>
-<form action="create_post.php" method="POST">
+<form method="POST">
     <?php
     // Vérifier si l'ID du sujet est présent dans la requête GET avant de l'utiliser
     if(isset($_GET['sujet_id'])) {
@@ -51,9 +51,8 @@ if(isset($_GET['sujet_id'])) {
         echo '<input type="hidden" name="sujet_id" value="">';
     }
     ?>
-    <label for="auteur">Auteur :</label>
-    <input type="text" id="auteur" name="auteur"><br>
     <label for="contenu">Contenu :</label><br>
     <textarea id="contenu" name="contenu" rows="4" cols="50"></textarea><br>
     <input type="submit" value="Envoyer">
 </form>
+<script src="../assets/js/ForumCreatePost.js"></script>

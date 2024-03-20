@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.length > 0) {
                     data.forEach(sujet => {
                         const sujetElement = document.createElement('a');
-                        sujetElement.href = '#';
+                        sujetElement.href = `?action=post#${sujet.id}`; // Lien vers la page des sujets avec l'ID du sujet
                         sujetElement.textContent = `${sujet.title} - ${sujet.num_replies} posts`;
                         // Ajoutez la classe "sujet-link" au lien
                         sujetElement.classList.add('sujet-link');
@@ -52,8 +52,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         // Récupérer l'ID du sujet à partir de l'attribut data-sujet-id
                         const sujetId = link.dataset.sujetId;
                         
-                        // Rediriger l'utilisateur vers la nouvelle page avec l'ID du sujet en tant que paramètre d'URL
-                        window.location.href = `../includes/forum_posts.php?sujet_id=${sujetId}`;
                     });
                 });
             })

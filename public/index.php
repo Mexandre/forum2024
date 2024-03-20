@@ -32,7 +32,6 @@ require_once(INC . "front_top.php"); // Inclusion du fichier top.php contenant l
 
 <?php
 require_once(INC . "front_menu.php"); // Inclusion du fichier menu.php contenant le code HTML du menu de navigation
-
 $action = isset($_GET['action']) ? $_GET['action'] : ""; // Récupération de la valeur de la variable d'action depuis l'URL
 $type = isset($_GET['type']) ? $_GET['type'] : ""; // Récupération de la valeur du type depuis l'URL
 
@@ -51,6 +50,9 @@ switch ($action) { // Switch sur la variable d'action
         break;
     case 'topics': 
         require_once(INC . "forum_themes.php");
+        break;
+    case 'posts':
+        require_once(INC . "forum_posts.php");
         break;
     case 'users':
         // page utilisateur
