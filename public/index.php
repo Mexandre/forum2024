@@ -55,6 +55,9 @@ switch ($action) { // Switch sur la variable d'action
     case 'newUsers':
         require_once(INC . "forum_user_form_create.php"); // Inclusion du formulaire d'inscription de nouveaux utilisateurs
         break;
+    case 'content': 
+        require_once(INC . "forum_content.php");
+        break;
     case 'topics': 
         require_once(INC . "forum_themes.php");
         break;
