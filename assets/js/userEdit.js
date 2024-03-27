@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', async function() {
     try {
-
         if (id) {
             // Étape 2: Envoyer une requête asynchrone pour récupérer les données de l'utilisateur
             const response = await fetch(`../api/components/ForumUsersData.php?id=${id}`);
@@ -25,7 +24,8 @@ document.addEventListener('DOMContentLoaded', async function() {
             // Afficher le nom de l'utilisateur dans un élément HTML
             //document.getElementById('nomUtilisateur').textContent = data.nom;
         }
-    } catch (error) {
+    } 
+    catch (error) {
         console.error('Erreur lors de la récupération des données:', error);
     }
 });

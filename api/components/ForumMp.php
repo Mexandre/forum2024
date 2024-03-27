@@ -12,7 +12,17 @@ $response = ['success' => false, 'msg' => 'Une erreur inattendue s\'est produite
 $method = $_SERVER['REQUEST_METHOD'];
 
 $data = json_decode(file_get_contents('php://input'), true);
-
+if($method == 'GET') {
+    if($data['userId']) {
+        $sql ="SELECT DISTINCT fms.*
+        FROM forum_mp_subject AS fms
+        JOIN forum_mp_msg AS fmm ON fms.id = fmm.mp_id
+        WHERE fmm.user_id = ?;";
+        $s  = $cnx->prepare($sql);
+        $s->execute ([$data['userId']]);
+        $response = $s->fetchAll();
+    }
+}
 if ($method == 'POST') {
     try {
         // Insérer les données dans la base de données
