@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return; // Arrêtez l'exécution du script si les clés nécessaires sont absentes
         }
 
-        fetch('../api/components/forumCreateSujet.php', {
+        fetch('../api/components/ForumThemes.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json' 

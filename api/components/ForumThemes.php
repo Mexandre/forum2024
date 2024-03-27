@@ -1,11 +1,66 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// Démarrage de la session
+session_start();
 
-session_start(); // Démarrer la session s'il n'est pas déjà démarré
+// Inclusion du fichier de configuration de la base de données
 require_once('../config/bdd.php');
-// Vérifie si la méthode de la requête est POST
+
+// Gérer les différentes actions en fonction de la requête
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    if (isset($_GET['theme_id'])) {
+        try {
+            // Vérifier si l'ID du thème est passé en paramètre
+            $themeId = $_GET['theme_id'];
+
+            // Requête pour récupérer les sujets du thème spécifié
+            $requete = "SELECT * FROM forum_topic WHERE theme_id = :theme_id";
+            $resultat = $cnx->prepare($requete);    
+            $resultat->bindParam(':theme_id', $themeId);
+            $resultat->execute();
+
+            // Initialisation d'un tableau pour stocker les résultats
+            $sujets = [];
+
+            // Récupération des résultats
+            while ($ligne = $resultat->fetch(PDO::FETCH_ASSOC)) {
+                $sujets[] = $ligne;
+            }
+
+            // Conversion du tableau en JSON et affichage
+            echo json_encode($sujets);
+        } catch (PDOException $e) {
+            // En cas d'erreur, renvoie d'un message d'erreur en JSON
+            echo json_encode(["error" => "Erreur lors de l'exécution de la requête : " . $e->getMessage()]);
+        }
+    } else {
+        // Si l'ID du thème n'est pas spécifié, récupérer tous les thèmes du forum
+        try {
+            // Requête pour récupérer tous les thèmes de la table "forum_theme"
+            $requete = "SELECT id, nom FROM forum_theme";
+            $resultat = $cnx->query($requete);
+
+            // Initialisation d'un tableau pour stocker les résultats
+            $themes = [];
+
+            // Vérifier s'il y a des résultats
+            if ($resultat->rowCount() > 0) {
+                // Récupération des résultats
+                while ($ligne = $resultat->fetch(PDO::FETCH_ASSOC)) {
+                    // Ajout de chaque thème dans le tableau
+                    $themes[] = $ligne;
+                }
+
+                echo json_encode($themes);
+            } else {
+                // Aucun thème trouvé, renvoie d'un message en JSON
+                echo json_encode(["message" => "Aucun thème trouvé dans la base de données."]);
+            }
+        } catch (PDOException $e) {
+            // En cas d'erreur, renvoie d'un message d'erreur en JSON
+            echo json_encode(["error" => "Erreur lors de l'exécution de la requête : " . $e->getMessage()]);
+        }
+    }
+} 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Récupération des données JSON de la requête
     $data = json_decode(file_get_contents('php://input'), true);
@@ -117,4 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode($response);
     }
 }
-?>
+
+
+
+

@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Mettre à jour la valeur de l'input hidden
         const inputThemeId = document.querySelector('#id_theme');
         inputThemeId.value = selectedThemeId;
-        fetch(`../api/components/ForumSujet.php?theme_id=${themeId}`)
+        fetch(`../api/components/ForumThemes.php?theme_id=${themeId}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`Réponse du serveur: ${response.status}`);
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.length > 0) {
                     data.forEach(sujet => {
                         const sujetElement = document.createElement('a');
-                        sujetElement.href = `?action=post#${sujet.id}`; // Lien vers la page des sujets avec l'ID du sujet
+                        sujetElement.href = `?action=post&sujet_id=${sujet.id}`; // Lien vers la page des sujets avec l'ID du sujet
                         sujetElement.textContent = `${sujet.title} - ${sujet.num_replies} posts`;
                         // Ajoutez la classe "sujet-link" au lien
                         sujetElement.classList.add('sujet-link');
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Récupération des thèmes
-    fetch('../api/components/ForumTheme.php')
+    fetch('../api/components/ForumThemes.php')
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Réponse du serveur: ${response.status}`);
