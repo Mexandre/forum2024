@@ -17,3 +17,4 @@ if (isset($_SESSION['id']) === true) {
 <h2 id="msg"></h2>
 <script src="../assets/js/forumThemes.js"></script>
 <script src="../assets/js/sujetCreate.js"></script>
+<script src="../assets/js/forumPost.js"></script>

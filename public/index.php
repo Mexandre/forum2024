@@ -51,9 +51,6 @@ switch ($action) { // Switch sur la variable d'action
     case 'topics': 
         require_once(INC . "forum_themes.php");
         break;
-    case 'posts':
-        require_once(INC . "forum_posts.php");
-        break;
     case 'users':
         // page utilisateur
         switch ($type) { // Switch sur le type
